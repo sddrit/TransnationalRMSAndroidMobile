@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primaryColor">#67431F</color>
+    <color name="primaryLightColor">#ffc246</color>
+    <color name="primaryDarkColor">#2B2828</color>
+    <color name="secondaryColor">#a1887f</color>
+    <color name="secondaryLightColor">#d3b8ae</color>
+    <color name="secondaryDarkColor">#524E4A</color>
+    <color name="primaryTextColor">#E1E1E1</color>
+    <color name="secondaryTextColor">#fafafa</color>
+
+    <color name="textboxBackgroundLightColor">#524E4A</color>
+    <color name="textboxTextLightColor">#CACACA</color>
+    <color name="textboxHintLightColor">#A6A6A6</color>
+    <color name="textboxErrorColor">#7A2222</color>
+
+    <color name="titleMainColor">#D8D8D8</color>
+    <color name="titleSubColor">#747474</color>
+
+    <color name="blackColor">#000000</color>
+
+    <color name="mtrl_textinput_default_box_stroke_color">@color/secondaryDarkColor</color>
+
+</resources>

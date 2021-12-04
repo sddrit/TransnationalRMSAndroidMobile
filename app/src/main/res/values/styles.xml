@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Trms_EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:textColor">@color/textboxTextLightColor</item>
+        <item name="android:textColorHint">@color/textboxHintLightColor</item>
+    </style>
+    <style name="Trms_EditTextLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/secondaryDarkColor</item>
+        <item name="boxStrokeErrorColor">@color/textboxErrorColor</item>
+        <item name="android:textColorHint">@color/textboxHintLightColor</item>
+        <item name="hintTextColor">@color/textboxHintLightColor</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="android:textCursorDrawable">@color/textboxTextLightColor</item>
+        <item name="endIconTint">@color/textboxTextLightColor</item>
+        <item name="startIconTint">@color/textboxTextLightColor</item>
+    </style>
+</resources>
