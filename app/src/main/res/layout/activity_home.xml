@@ -47,6 +47,7 @@
             app:icon="@drawable/outline_lock_open_black_24dp"
             app:iconGravity="textStart"
             app:iconPadding="0dp" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -1,82 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/primaryDarkColor"
-    android:scaleType="centerInside"
-    android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
-    tools:context=".MainActivity">
 
-    <LinearLayout
-        android:id="@+id/ll_main_layout"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable name="viewModel"
+            type="com.tlrm.mobile.whapp.mvvm.main.viewmodel.MainViewModel"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/login_background"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:paddingTop="0dp"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp"
-        app:layout_constraintTop_toTopOf="parent">
+        android:background="@color/primaryDarkColor"
+        android:scaleType="centerInside"
+        android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
+        tools:context=".mvvm.main.view.MainActivity">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_centerHorizontal="true"
-            android:scaleType="centerInside"
-            android:src="@drawable/logo" />
+        <LinearLayout
+            android:id="@+id/ll_main_layout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/login_background"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Trms_EditTextLayout"
-            android:id="@+id/activity_main_username_edit_text_layout"
-            android:layout_width="match_parent"
-            app:endIconMode="clear_text"
-            app:errorEnabled="true"
-            android:hint="Username"
-            app:startIconDrawable="@drawable/outline_person_black_24dp"
-            android:layout_height="wrap_content">
-            <com.google.android.material.textfield.TextInputEditText
-                style="@style/Trms_EditText"
-                android:id="@+id/activity_main_username_edit_text"
-                android:inputType="textNoSuggestions"
+            <TableLayout
+                android:stretchColumns="*"
+                android:layout_marginTop="140dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-            </com.google.android.material.textfield.TextInputEditText>
-        </com.google.android.material.textfield.TextInputLayout>
+                <TableRow>
+                    <Button
+                        style="@style/Trms_MainManuButton"
+                        android:layout_column="0"
+                        android:text="PICK LIST"
+                        android:onClick="@{() -> viewModel.pickList()}"
+                        app:icon="@drawable/outline_inventory_2_white_24dp" />
+                    <Button
+                        style="@style/Trms_MainManuButton"
+                        android:layout_column="1"
+                        android:text="PALLATE"
+                        app:icon="@drawable/outline_calendar_view_week_white_24dp" />
+                </TableRow>
+                <TableRow>
+                    <Button
+                        style="@style/Trms_MainManuButton"
+                        android:layout_column="0"
+                        android:text="REQUEST"
+                        app:icon="@drawable/outline_emoji_transportation_white_24dp" />
 
+                    <Button
+                        style="@style/Trms_MainManuButton"
+                        android:layout_column="1"
+                        android:text="DETAILS"
+                        app:icon="@drawable/outline_manage_search_white_24dp" />
+                </TableRow>
+                <TableRow>
+                    <Button
+                        style="@style/Trms_MainManuButton"
+                        android:layout_column="0"
+                        android:text="SYNC"
+                        app:icon="@drawable/outline_cloud_sync_white_24dp" />
+                    <Button
+                        style="@style/Trms_MainManuButton"
+                        android:layout_column="1"
+                        android:text="SETTINGS"
+                        app:icon="@drawable/outline_settings_white_24dp" />
+                </TableRow>
+            </TableLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Trms_EditTextLayout"
-            android:id="@+id/activity_main_password_edit_text_layout"
-            android:layout_width="match_parent"
-            app:endIconMode="clear_text"
-            app:errorEnabled="true"
-            android:hint="Password"
-            app:startIconDrawable="@drawable/outline_lock_open_black_24dp"
-            android:layout_height="wrap_content">
-            <com.google.android.material.textfield.TextInputEditText
-                style="@style/Trms_EditText"
-                android:id="@+id/activity_main_password_edit_text"
-                android:inputType="textPassword"
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:padding="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_alignParentTop="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/logo" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/activity_main_log_off_button"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_alignParentRight="true"
+                android:onClick="@{() -> viewModel.logOff()}"
+                android:insetLeft="0dp"
+                android:insetTop="0dp"
+                android:insetRight="0dp"
+                android:insetBottom="0dp"
+                app:backgroundTint="@color/blackColor"
+                app:cornerRadius="52dp"
+                app:icon="@drawable/outline_lock_open_black_24dp"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp" />
+
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            </com.google.android.material.textfield.TextInputEditText>
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
+                android:paddingLeft="10dp"
+                android:text="@{viewModel.greeting}"
+                android:textColor="@color/titleMainColor"
+                android:textFontWeight="600"
+                android:textSize="24dp" />
 
-        <Button
-            android:id="@+id/activity_main_login_button"
-            android:layout_width="match_parent"
-            android:layout_marginTop="0dp"
-            android:layout_height="60dp"
-            android:text="@string/login_form_login"
-            android:textColor="@color/textboxTextLightColor"
-            android:textSize="18sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="90dp"
+                android:paddingLeft="10dp"
+                android:text="@{viewModel.fullName}"
+                android:textColor="@color/titleSubColor"
+                android:textFontWeight="600"
+                android:textSize="14dp" />
 
-    </LinearLayout>
+        </RelativeLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
+

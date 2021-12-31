@@ -2,10 +2,12 @@ package com.tlrm.mobile.whapp
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
+import com.tlrm.mobile.whapp.mvvm.login.view.LoginActivity
+
 
 class HomeActivity : AppCompatActivity() {
 
@@ -19,12 +21,12 @@ class HomeActivity : AppCompatActivity() {
         var log_off_button = findViewById<Button>(R.id.activity_home_log_off_button)
 
         scan_button.setOnClickListener {
-            val scanIntent = Intent(this@HomeActivity, ScanActivity::class.java)
+            val scanIntent = Intent(this@HomeActivity, PickListScanActivity::class.java)
             startActivityForResult(scanIntent, SCAN_BY_CAMERA_ACTIVITY_CODE)
         }
 
         log_off_button.setOnClickListener {
-            val mainIntent = Intent(this@HomeActivity, MainActivity::class.java)
+            val mainIntent = Intent(this@HomeActivity, LoginActivity::class.java)
             startActivity(mainIntent)
             finish()
         }
@@ -41,11 +43,11 @@ class HomeActivity : AppCompatActivity() {
                 val barcodes = data?.getStringArrayExtra("BarCodes")
                 if (barcodes != null) {
                     if (barcodes.isNotEmpty()) {
-                        val barcode = barcodes.first()
-                        barcode_text_input.setText(barcode)
+
                     }
                 }
             }
         }
     }
+
 }

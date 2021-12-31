@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PickListScanActivity">
+
+    <com.journeyapps.barcodescanner.DecoratedBarcodeView
+        android:id="@+id/barcode_scanner"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_above="@+id/buttons_layout"
+        android:layout_alignParentTop="true">
+    </com.journeyapps.barcodescanner.DecoratedBarcodeView>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/primaryDarkColor"
+        android:padding="10dp"
+        android:id="@+id/buttons_layout">
+        <Button
+            android:layout_height="60dp"
+            android:layout_width="match_parent"
+            android:textColor="@color/textboxTextLightColor"
+            android:textSize="18sp"
+            android:text="COMPLETE" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="false"
+        android:background="@color/primaryDarkColor"
+        android:padding="10dp">
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TableRow>
+                <TextView
+                    android:id="@+id/pick_list_scan_pick_list_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/textboxTextLightColor"
+                    android:text="Number"
+                    android:layout_weight="0.5"
+                    android:textSize="16sp" />
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:gravity="right"
+                    android:layout_weight="0.1">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:textAlignment="center"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textboxHintLightColor"
+                        android:layout_marginBottom="5dp"
+                        android:text="Count"
+                        android:textSize="10sp" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:scaleType="centerInside"
+                        app:tint="#FFC107"
+                        android:src="@drawable/outline_inventory_2_white_24dp">
+                    </ImageView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:textAlignment="center"
+                        android:id="@+id/pick_list_scan_item_count"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textboxTextLightColor"
+                        android:layout_marginTop="5dp"
+                        android:text="Count"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:gravity="right"
+                    android:layout_weight="0.1">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:textAlignment="center"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textboxHintLightColor"
+                        android:layout_marginBottom="5dp"
+                        android:text="Picked"
+                        android:textSize="10sp" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:scaleType="centerInside"
+                        app:tint="#009c38"
+                        android:src="@drawable/baseline_back_hand_black_24dp">
+                    </ImageView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:textAlignment="center"
+                        android:id="@+id/pick_list_scan_item_picked"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textboxTextLightColor"
+                        android:layout_marginTop="5dp"
+                        android:text="Picked"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>
