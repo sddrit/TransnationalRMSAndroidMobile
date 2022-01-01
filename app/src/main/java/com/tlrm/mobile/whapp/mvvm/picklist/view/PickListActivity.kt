@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ListView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -63,22 +64,20 @@ class PickListActivity : AppCompatActivity() {
     }
 
     private fun setupObserver() {
+
+        val spinner = this.
+            findViewById<LinearProgressIndicator>(R.id.activity_picklist_progress_indicator);
+
         pickListViewModel.loadingState.observe(this, Observer {
             when(it.status) {
                 LoadingState.Status.SUCCESS -> {
-                    loaderIndicator.apply {
-                        visibility = View.GONE
-                    }
+                        spinner.visibility = View.GONE
                 }
                 LoadingState.Status.RUNNING -> {
-                    loaderIndicator.apply {
-                        visibility = View.VISIBLE
-                    }
+                    spinner.visibility = View.VISIBLE
                 }
                 LoadingState.Status.FAILED -> {
-                    loaderIndicator.apply {
-                        visibility = View.GONE
-                    }
+                    spinner.visibility = View.GONE
                 }
             }
         })

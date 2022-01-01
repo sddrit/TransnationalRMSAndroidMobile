@@ -48,9 +48,11 @@ class PickListScanActivity : AppCompatActivity() {
             if (result.text == null || lastText == result.text) {
                 return
             }
+            barcodeView.pause()
             lastText = result.text
             beepManager.playBeepSoundAndVibrate()
             pickListScanViewModel.scan(result.text)
+            barcodeView.resume()
         }
         override fun possibleResultPoints(resultPoints: List<ResultPoint>) {}
     }
@@ -87,10 +89,6 @@ class PickListScanActivity : AppCompatActivity() {
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
-    fun complete() {
-
     }
 
     fun triggerScan(view: View?) {

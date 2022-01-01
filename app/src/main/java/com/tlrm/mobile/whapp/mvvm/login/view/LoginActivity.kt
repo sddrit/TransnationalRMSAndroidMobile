@@ -40,17 +40,21 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupObserver() {
+
+        val spinner = this.
+                findViewById<LinearProgressIndicator>(R.id.activity_login_progress_indicator);
+
         loginViewModel.loadingState.observe(this, Observer {
             when(it.status) {
                 LoadingState.Status.SUCCESS -> {
-                    loaderIndicator.visibility = View.INVISIBLE
+                    spinner.visibility = View.INVISIBLE
                     startHomeActivity()
                 }
                 LoadingState.Status.RUNNING -> {
-                    loaderIndicator.visibility = View.VISIBLE
+                    spinner.visibility = View.VISIBLE
                 }
                 LoadingState.Status.FAILED -> {
-                    loaderIndicator.visibility = View.INVISIBLE
+                    spinner.visibility = View.INVISIBLE
                     val toast = Toast.makeText(this@LoginActivity, it.msg,
                         Toast.LENGTH_LONG)
                     toast.show()

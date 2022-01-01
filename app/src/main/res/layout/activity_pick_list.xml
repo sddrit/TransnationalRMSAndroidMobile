@@ -48,13 +48,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.progressindicator.LinearProgressIndicator
-                android:id="@+id/activity_picklist_progress_indicator"
-                android:visibility="invisible"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:indeterminate="true" />
-
             <ImageView
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="10dp"
@@ -89,9 +82,14 @@
                 android:textFontWeight="600"
                 android:textSize="14dp" />
 
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/activity_picklist_progress_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="visible" />
+
         </RelativeLayout>
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
