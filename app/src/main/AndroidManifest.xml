@@ -15,10 +15,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TLRMWarehouseMobileApplication">
         <activity
+            android:name=".mvvm.picklistdetails.view.PickListDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".mvvm.startup.view.StartupActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -29,15 +33,14 @@
             android:name=".mvvm.main.view.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".PickListScanActivity"
+            android:name=".mvvm.picklistscan.view.PickListScanActivity"
             android:exported="false" />
         <activity
             android:name=".HomeActivity"
             android:exported="false" />
         <activity
             android:name=".mvvm.login.view.LoginActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
     </application>
 
 </manifest>

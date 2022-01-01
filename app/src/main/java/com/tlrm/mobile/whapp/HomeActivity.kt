@@ -7,6 +7,7 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.tlrm.mobile.whapp.mvvm.login.view.LoginActivity
+import com.tlrm.mobile.whapp.mvvm.picklistscan.view.PickListScanActivity
 
 
 class HomeActivity : AppCompatActivity() {

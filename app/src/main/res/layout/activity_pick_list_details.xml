@@ -5,8 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable name="pickListViewModel"
-            type="com.tlrm.mobile.whapp.mvvm.picklist.viewmodel.PickListViewModel"/>
+        <variable
+            name="viewModel"
+            type="com.tlrm.mobile.whapp.mvvm.picklistdetails.viewmodel.PickListDetailsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,10 +15,9 @@
         android:layout_height="match_parent"
         android:background="@color/primaryDarkColor"
         android:scaleType="centerInside"
-        tools:context=".mvvm.picklist.view.PickListActivity">
+        tools:context=".mvvm.picklistdetails.view.PickListDetailsActivity">
 
         <LinearLayout
-            android:id="@+id/ll_main_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/login_background"
@@ -26,17 +26,27 @@
             android:paddingTop="0dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
+            android:paddingBottom="10dp"
             app:layout_constraintTop_toTopOf="parent">
             <ListView
+                android:layout_weight="0.9"
                 android:scrollbars="none"
                 android:layout_marginTop="140dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/picklist_list_list_view"
+                android:id="@+id/picklist_list_details_list_view"
                 android:background="@color/transparent"
                 android:divider="@color/transparent"
                 android:dividerHeight="10.0sp"
                 android:clickable="true" />
+            <Button
+                android:layout_weight="0.1"
+                android:layout_height="60dp"
+                android:layout_width="match_parent"
+                android:textColor="@color/textboxTextLightColor"
+                android:textSize="18sp"
+                android:onClick="@{() -> viewModel.scan()}"
+                android:text="SCAN" />
         </LinearLayout>
 
         <RelativeLayout
@@ -49,11 +59,11 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.progressindicator.LinearProgressIndicator
-                android:id="@+id/activity_picklist_progress_indicator"
-                android:visibility="invisible"
+                android:id="@+id/activity_picklist_details_progress_indicator"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:indeterminate="true" />
+                android:indeterminate="true"
+                android:visibility="invisible" />
 
             <ImageView
                 android:layout_marginTop="20dp"
@@ -72,26 +82,25 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:paddingLeft="10dp"
-                android:text="PICK LIST"
+                android:text="PICK LIST DETAILS"
                 android:textColor="@color/titleMainColor"
                 android:textFontWeight="600"
                 android:textSize="24dp" />
 
             <TextView
+                android:id="@+id/pick_list_details_picklist_number_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
-                android:paddingLeft="10dp"
                 android:layout_marginLeft="10dp"
+                android:layout_marginTop="100dp"
                 android:layout_marginRight="10dp"
-                android:text="Assigned Picklist"
+                android:paddingLeft="10dp"
+                android:text="@{viewModel.pickListNo}"
                 android:textColor="@color/titleSubColor"
                 android:textFontWeight="600"
                 android:textSize="14dp" />
 
         </RelativeLayout>
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

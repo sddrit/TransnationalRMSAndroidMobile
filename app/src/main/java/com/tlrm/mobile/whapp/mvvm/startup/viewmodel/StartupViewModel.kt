@@ -26,7 +26,7 @@ class StartupViewModel(private val userService: UserService): ViewModel() {
                 userService.refresh()
                 _loadingState.value = LoadingState.LOADED
             } catch (e: Exception) {
-                _loadingState.value = LoadingState.error(e.message)
+                _loadingState.value = LoadingState.error("Unable to sync the user data from server")
             }
         }
     }

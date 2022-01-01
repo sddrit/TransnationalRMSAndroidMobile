@@ -2,14 +2,19 @@ package com.tlrm.mobile.whapp.services
 
 import android.util.Log
 import com.tlrm.mobile.whapp.api.PickListApiService
+import com.tlrm.mobile.whapp.api.PickListPickRequest
 import com.tlrm.mobile.whapp.database.dao.PickListDao
 import com.tlrm.mobile.whapp.database.dao.PickListDetailsItem
 import com.tlrm.mobile.whapp.database.entities.PickListEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 
 class PickListService(private val pickListApiService: PickListApiService,
     private val pickListDao: PickListDao) {
+
+    private val TAG = PickListService::class.java.simpleName
 
     suspend fun getPickListDetailItems(): List<PickListDetailsItem> {
         return withContext(Dispatchers.IO) {
@@ -17,10 +22,58 @@ class PickListService(private val pickListApiService: PickListApiService,
         }
     }
 
+    suspend fun getPickListItems(pickListNo: String): List<PickListEntity> {
+        return withContext(Dispatchers.IO) {
+            return@withContext pickListDao.getPickListItems(pickListNo)
+        }
+    }
+
+    suspend fun getPickListDetails(pickListNo: String): PickListDetailsItem {
+        return withContext(Dispatchers.IO) {
+            return@withContext pickListDao.getPickListDetailItem(pickListNo)
+        }
+    }
+
+    suspend fun markAsPicked(cartonNo: String, pickedUserId: Int, pickedDateTime: String) {
+        return withContext(Dispatchers.IO) {
+            return@withContext pickListDao.markAsPicked(cartonNo, pickedUserId, pickedDateTime)
+        }
+    }
+
+    suspend fun syncedItem(cartonNo: String): Boolean {
+        return withContext(Dispatchers.IO) {
+
+            var pickListItem = pickListDao.getPickListItem(cartonNo)
+
+            if (pickListItem.synced || !pickListItem.picked) {
+                return@withContext true
+            }
+
+            var postPickList = ArrayList<PickListPickRequest>()
+            var pickedDateTime = pickListItem.pickedDateTime!!.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+            postPickList.add(PickListPickRequest(pickListItem.pickListNo, pickListItem.cartonNo,
+                pickedDateTime, pickListItem.pickedUserId!!))
+
+            var call = pickListApiService.postPickLists(postPickList)
+            var response = call.execute()
+
+            if(!response.isSuccessful) {
+                Log.e(TAG,
+                    "Unable to marked as picked the carton no ${pickListItem.barcode}")
+                return@withContext false
+            }
+
+            val currentDateTime = OffsetDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+            pickListDao.markAsSynced(pickListItem.trackingId, currentDateTime)
+
+            return@withContext true;
+        }
+    }
+
     suspend fun refresh() {
         withContext(Dispatchers.IO) {
 
-            var getPickListCall = pickListApiService.getPickLists("DEV001")
+            var getPickListCall = pickListApiService.getPickLists("DEV002")
             var response = getPickListCall.execute()
 
             if (!response.isSuccessful) {

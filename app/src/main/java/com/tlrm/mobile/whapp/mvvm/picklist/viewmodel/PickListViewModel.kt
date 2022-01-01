@@ -1,12 +1,14 @@
 package com.tlrm.mobile.whapp.mvvm.picklist.viewmodel
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlrm.mobile.whapp.mvvm.picklist.model.PickListItem
+import com.tlrm.mobile.whapp.mvvm.picklistdetails.view.PickListDetailsActivity
 import com.tlrm.mobile.whapp.services.PickListService
 import com.tlrm.mobile.whapp.util.LoadingState
 import kotlinx.coroutines.launch
@@ -27,7 +29,16 @@ class PickListViewModel(private val context: Context,
         fetchData()
     }
 
-    private fun fetchData() {
+    fun gotoToPickListDetails(pickListItem: PickListItem) {
+        val intent = Intent(context, PickListDetailsActivity::class.java)
+        intent.putExtra("pick_list_id", pickListItem.id)
+        intent.putExtra("pick_list_name", pickListItem.pickListName)
+        intent.putExtra("pick_list_count", pickListItem.count)
+        intent.putExtra("pick_list_picked", pickListItem.picked)
+        context.startActivity(intent)
+    }
+
+     fun fetchData() {
         viewModelScope.launch {
             _loadingState.value = LoadingState.loading("Syncing picklist from server")
 

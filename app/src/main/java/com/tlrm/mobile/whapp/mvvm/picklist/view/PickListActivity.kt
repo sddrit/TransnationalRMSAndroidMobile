@@ -1,7 +1,6 @@
 package com.tlrm.mobile.whapp.mvvm.picklist.view
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +11,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import com.google.android.material.progressindicator.CircularProgressIndicator
-import com.tlrm.mobile.whapp.PickListScanActivity
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.tlrm.mobile.whapp.R
 import com.tlrm.mobile.whapp.api.PickListApiService
 import com.tlrm.mobile.whapp.api.ServiceGenerator
@@ -29,7 +27,7 @@ class PickListActivity : AppCompatActivity() {
     lateinit var listView: ListView
     lateinit var pickListViewModel: PickListViewModel
     lateinit var binding: ActivityPickListBinding;
-    lateinit var loaderIndicator: CircularProgressIndicator;
+    lateinit var loaderIndicator: LinearProgressIndicator;
 
     var adapter: PickListAdapter? = null
     var pickList: ArrayList<PickListItem> = ArrayList()
@@ -48,12 +46,7 @@ class PickListActivity : AppCompatActivity() {
 
         listView.setOnItemClickListener { parent, view, position, id ->
             val element = adapter!!.getItem(position) as PickListItem
-            val intent = Intent(this, PickListScanActivity::class.java)
-            intent.putExtra("pick_list_id", element.id)
-            intent.putExtra("pick_list_name", element.pickListName)
-            intent.putExtra("pick_list_count", element.count)
-            intent.putExtra("pick_list_picked", element.picked)
-            startActivity(intent)
+            pickListViewModel.gotoToPickListDetails(element)
         }
 
         pickListViewModel.data.observe(this, {
@@ -64,17 +57,28 @@ class PickListActivity : AppCompatActivity() {
 
     }
 
+    override fun onRestart() {
+        super.onRestart()
+        pickListViewModel.fetchData()
+    }
+
     private fun setupObserver() {
         pickListViewModel.loadingState.observe(this, Observer {
             when(it.status) {
                 LoadingState.Status.SUCCESS -> {
-                    loaderIndicator.visibility = View.INVISIBLE
+                    loaderIndicator.apply {
+                        visibility = View.GONE
+                    }
                 }
                 LoadingState.Status.RUNNING -> {
-                    loaderIndicator.visibility = View.VISIBLE
+                    loaderIndicator.apply {
+                        visibility = View.VISIBLE
+                    }
                 }
                 LoadingState.Status.FAILED -> {
-                    loaderIndicator.visibility = View.INVISIBLE
+                    loaderIndicator.apply {
+                        visibility = View.GONE
+                    }
                 }
             }
         })
