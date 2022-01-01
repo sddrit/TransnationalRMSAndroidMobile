@@ -70,6 +70,7 @@ class PickListScanViewModel(
                 }
 
                 pickListService.markAsPicked(pickListItem.barcode, user.id, currentDateTime)
+                pickListItem.picked = true
 
                 val builder: Constraints.Builder = Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.CONNECTED)
