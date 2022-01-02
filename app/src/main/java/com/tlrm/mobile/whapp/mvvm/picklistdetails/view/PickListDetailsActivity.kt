@@ -1,7 +1,6 @@
 package com.tlrm.mobile.whapp.mvvm.picklistdetails.view
 
 import android.content.Context
-import android.media.Image
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,19 +9,21 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.tlrm.mobile.whapp.R
+import com.tlrm.mobile.whapp.api.DeviceApiService
 import com.tlrm.mobile.whapp.api.PickListApiService
 import com.tlrm.mobile.whapp.api.ServiceGenerator
 import com.tlrm.mobile.whapp.database.AppDatabase
 import com.tlrm.mobile.whapp.databinding.ActivityPickListDetailsBinding
 import com.tlrm.mobile.whapp.mvvm.picklistdetails.model.PickListDetailsItem
 import com.tlrm.mobile.whapp.mvvm.picklistdetails.viewmodel.PickListDetailsViewModel
+import com.tlrm.mobile.whapp.services.DeviceService
 import com.tlrm.mobile.whapp.services.PickListService
+import com.tlrm.mobile.whapp.services.SessionService
 import com.tlrm.mobile.whapp.util.LoadingState
 
 class PickListDetailsActivity : AppCompatActivity() {
@@ -90,7 +91,12 @@ class PickListDetailsActivity : AppCompatActivity() {
         pickListDetailsViewModel = PickListDetailsViewModel(this,
             PickListService(
                 ServiceGenerator.createService(PickListApiService::class.java),
-                database.pickListDao())
+                DeviceService(
+                    ServiceGenerator.createService(DeviceApiService::class.java),
+                    SessionService(this.applicationContext)
+                ),
+                database.pickListDao()
+            )
         )
         binding = DataBindingUtil
             .setContentView(this, R.layout.activity_pick_list_details)

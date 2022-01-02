@@ -16,6 +16,8 @@ import kotlinx.coroutines.launch
 class PickListViewModel(private val context: Context,
                         private val pickListService: PickListService): ViewModel() {
 
+    private val TAG = PickListViewModel::class.java.simpleName
+
     private val _loadingState = MutableLiveData<LoadingState>()
     private val _data = MutableLiveData<List<PickListItem>>(emptyList())
 
@@ -45,7 +47,7 @@ class PickListViewModel(private val context: Context,
             try {
                 pickListService.refresh()
             } catch (e: Exception) {
-                Log.e("PICKLIST", "Unable to refresh picklist", e)
+                Log.e(TAG, "Unable to refresh picklist", e)
             }
 
             try{
@@ -57,7 +59,7 @@ class PickListViewModel(private val context: Context,
                 _data.postValue(pickListItem)
             }catch (e: Exception) {
                 _loadingState.value = LoadingState.error("Unable to load pick list details")
-                Log.e("PICKLIST", "Unable to get the picklist details from database", e)
+                Log.e(TAG, "Unable to get the picklist details from database", e)
                 return@launch
             }
 

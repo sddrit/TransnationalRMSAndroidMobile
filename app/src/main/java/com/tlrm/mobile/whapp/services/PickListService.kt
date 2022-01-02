@@ -11,7 +11,9 @@ import kotlinx.coroutines.withContext
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 
-class PickListService(private val pickListApiService: PickListApiService,
+class PickListService(
+    private val pickListApiService: PickListApiService,
+    private val deviceService: DeviceService,
     private val pickListDao: PickListDao) {
 
     private val TAG = PickListService::class.java.simpleName
@@ -73,19 +75,27 @@ class PickListService(private val pickListApiService: PickListApiService,
     suspend fun refresh() {
         withContext(Dispatchers.IO) {
 
-            var getPickListCall = pickListApiService.getPickLists("DEV002")
-            var response = getPickListCall.execute()
+            val deviceInfo = deviceService.getDeviceInfo()
+
+            if (deviceInfo == null) {
+                Log.e(TAG,
+                    "Unable to device info")
+                return@withContext
+            }
+
+            val getPickListCall = pickListApiService.getPickLists(deviceInfo.code)
+            val response = getPickListCall.execute()
 
             if (!response.isSuccessful) {
-                Log.e("TNRMS-MOBILE",
+                Log.e(TAG,
                     "Unable to get picklist from api")
                 return@withContext
             }
 
-            var picklist = response.body()
+            val picklist = response.body()
 
             if (picklist == null) {
-                Log.e("TNRMS-MOBILE",
+                Log.e(TAG,
                     "Empty picklist return from get user api endpoint")
                 return@withContext
             }
@@ -101,7 +111,7 @@ class PickListService(private val pickListApiService: PickListApiService,
                             null, false, null)
                     )
                 } catch (e: Exception) {
-                    Log.e("TNRMS-MOBILE",
+                    Log.e(TAG,
                         "Unable to insert picklist entity to local database", e)
                 }
             }

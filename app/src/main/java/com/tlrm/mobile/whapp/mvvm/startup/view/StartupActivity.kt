@@ -6,11 +6,15 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.tlrm.mobile.whapp.R
+import com.tlrm.mobile.whapp.api.DeviceApiService
 import com.tlrm.mobile.whapp.api.ServiceGenerator
 import com.tlrm.mobile.whapp.api.UserApiService
 import com.tlrm.mobile.whapp.database.AppDatabase
 import com.tlrm.mobile.whapp.mvvm.login.view.LoginActivity
+import com.tlrm.mobile.whapp.mvvm.picklistscan.view.PickListScanActivity
 import com.tlrm.mobile.whapp.mvvm.startup.viewmodel.StartupViewModel
+import com.tlrm.mobile.whapp.services.DeviceService
+import com.tlrm.mobile.whapp.services.SessionService
 import com.tlrm.mobile.whapp.services.UserService
 import com.tlrm.mobile.whapp.util.LoadingState
 
@@ -46,7 +50,6 @@ class StartupActivity : AppCompatActivity() {
                 }
                 LoadingState.Status.FAILED -> {
                     loadMessageTextView.text = it.msg
-                    startMainActivity()
                 }
             }
         })
@@ -58,8 +61,16 @@ class StartupActivity : AppCompatActivity() {
 
     private fun setupViewModel() {
         val database = AppDatabase.getDatabase(this.applicationContext)
-        viewModel = StartupViewModel(UserService(ServiceGenerator.createService(UserApiService::class.java),
-            database.userDao()))
+        viewModel = StartupViewModel(
+            UserService(
+                ServiceGenerator.createService(UserApiService::class.java),
+                database.userDao()
+            ),
+            DeviceService(
+                ServiceGenerator.createService(DeviceApiService::class.java),
+                SessionService(this.applicationContext)
+            )
+        )
     }
 
 }

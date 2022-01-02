@@ -4,9 +4,12 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.tlrm.mobile.whapp.database.entities.UserEntity
 
+data class DeviceInfo(val code: String, val description: String, val active: Boolean)
+
 class SessionService(private val context: Context) {
 
     private val USER_PREFERENCES: String = "USER_PREFERENCES"
+    private val DEVICE_PREFERENCES: String = "DEVICE_PREFERENCES"
     private val PRIVATE_MODE: Int = 0
 
     fun clearUser() {
@@ -27,9 +30,10 @@ class SessionService(private val context: Context) {
          editor.apply()
      }
 
-    fun getUser() :UserEntity {
+    fun getUser(): UserEntity {
         val preferences = getUserPreferences()
-        return UserEntity(preferences.getInt("Id", 0),
+        return UserEntity(
+            preferences.getInt("Id", 0),
             preferences.getString("UserName", null)!!,
             preferences.getString("UserNameMobile", null)!!,
             preferences.getString("FullName", null)!!,
@@ -37,7 +41,34 @@ class SessionService(private val context: Context) {
             "",
             "",
             preferences.getString("Roles", null)!!.split(",")
-                .toCollection(ArrayList()))
+                .toCollection(ArrayList())
+        )
+    }
+
+    fun setDevice(code: String, description: String, active: Boolean) {
+        val preferences = getDevicePreferences()
+        val editor = preferences.edit()
+        editor.putString("Code", code)
+        editor.putString("Description", description)
+        editor.putBoolean("Active", active)
+        editor.apply()
+    }
+
+    fun getDevice(): DeviceInfo? {
+        val preferences = getDevicePreferences()
+
+        if (preferences.all.isEmpty()) {
+            return null
+        }
+        return DeviceInfo(
+            preferences.getString("Code", null)!!,
+            preferences.getString("Description", null)!!,
+            preferences.getBoolean("Active", false)
+        )
+    }
+
+    private fun getDevicePreferences(): SharedPreferences {
+        return context.getSharedPreferences(DEVICE_PREFERENCES, PRIVATE_MODE)
     }
 
     private fun getUserPreferences(): SharedPreferences {

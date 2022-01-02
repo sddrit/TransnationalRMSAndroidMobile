@@ -19,13 +19,13 @@
         android:paddingTop="0dp"
         android:paddingLeft="30dp"
         android:paddingRight="43dp"
-        app:layout_constraintTop_toTopOf="parent">
-    </LinearLayout>
+        app:layout_constraintTop_toTopOf="parent"></LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="10dp">
+
         <ImageView
             android:layout_width="200dp"
             android:layout_height="50dp"
@@ -86,8 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android="0dp"
-                android:inputType="textNoSuggestions">
-            </com.google.android.material.textfield.TextInputEditText>
+                android:inputType="textNoSuggestions"></com.google.android.material.textfield.TextInputEditText>
 
         </com.google.android.material.textfield.TextInputLayout>
 

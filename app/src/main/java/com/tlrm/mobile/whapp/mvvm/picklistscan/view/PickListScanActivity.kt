@@ -21,11 +21,13 @@ import com.journeyapps.barcodescanner.BarcodeResult
 import com.journeyapps.barcodescanner.DecoratedBarcodeView
 import com.journeyapps.barcodescanner.DefaultDecoderFactory
 import com.tlrm.mobile.whapp.R
+import com.tlrm.mobile.whapp.api.DeviceApiService
 import com.tlrm.mobile.whapp.api.PickListApiService
 import com.tlrm.mobile.whapp.api.ServiceGenerator
 import com.tlrm.mobile.whapp.database.AppDatabase
 import com.tlrm.mobile.whapp.databinding.ActivityPickListScanBinding
 import com.tlrm.mobile.whapp.mvvm.picklistscan.viewmodel.PickListScanViewModel
+import com.tlrm.mobile.whapp.services.DeviceService
 import com.tlrm.mobile.whapp.services.PickListService
 import com.tlrm.mobile.whapp.services.SessionService
 import com.tlrm.mobile.whapp.util.LoadingState
@@ -123,7 +125,12 @@ class PickListScanActivity : AppCompatActivity() {
             SessionService(this),
             PickListService(
                 ServiceGenerator.createService(PickListApiService::class.java),
-                database.pickListDao())
+                DeviceService(
+                    ServiceGenerator.createService(DeviceApiService::class.java),
+                    SessionService(this.applicationContext)
+                ),
+                database.pickListDao()
+            )
         )
         binding = DataBindingUtil
             .setContentView(this, R.layout.activity_pick_list_scan)

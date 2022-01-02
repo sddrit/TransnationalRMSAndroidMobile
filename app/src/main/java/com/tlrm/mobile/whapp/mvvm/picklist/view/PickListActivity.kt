@@ -7,20 +7,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ListView
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.tlrm.mobile.whapp.R
+import com.tlrm.mobile.whapp.api.DeviceApiService
 import com.tlrm.mobile.whapp.api.PickListApiService
 import com.tlrm.mobile.whapp.api.ServiceGenerator
 import com.tlrm.mobile.whapp.database.AppDatabase
 import com.tlrm.mobile.whapp.databinding.ActivityPickListBinding
 import com.tlrm.mobile.whapp.mvvm.picklist.model.PickListItem
 import com.tlrm.mobile.whapp.mvvm.picklist.viewmodel.PickListViewModel
+import com.tlrm.mobile.whapp.services.DeviceService
 import com.tlrm.mobile.whapp.services.PickListService
+import com.tlrm.mobile.whapp.services.SessionService
 import com.tlrm.mobile.whapp.util.LoadingState
 
 class PickListActivity : AppCompatActivity() {
@@ -92,7 +94,12 @@ class PickListActivity : AppCompatActivity() {
         pickListViewModel = PickListViewModel(this,
             PickListService(
                 ServiceGenerator.createService(PickListApiService::class.java),
-                database.pickListDao())
+                DeviceService(
+                    ServiceGenerator.createService(DeviceApiService::class.java),
+                    SessionService(this.applicationContext)
+                ),
+                database.pickListDao()
+            )
         )
         binding = DataBindingUtil
             .setContentView(this, R.layout.activity_pick_list)

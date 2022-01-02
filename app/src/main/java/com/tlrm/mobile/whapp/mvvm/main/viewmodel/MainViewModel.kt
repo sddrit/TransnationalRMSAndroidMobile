@@ -8,19 +8,27 @@ import com.tlrm.mobile.whapp.mvvm.login.view.LoginActivity
 import com.tlrm.mobile.whapp.services.SessionService
 import java.util.*
 import android.app.Activity
+import com.tlrm.mobile.whapp.BuildConfig
 import com.tlrm.mobile.whapp.mvvm.picklist.view.PickListActivity
+import com.tlrm.mobile.whapp.services.DeviceService
 
 
 class MainViewModel(private val context: Context,
+                    private val deviceService: DeviceService,
                     private val sessionService: SessionService): ViewModel() {
 
     val fullName: MutableLiveData<String> = MutableLiveData<String>();
-    var greeting: MutableLiveData<String> = MutableLiveData<String>();
+    val greeting: MutableLiveData<String> = MutableLiveData<String>();
+    val deviceName: MutableLiveData<String> = MutableLiveData<String>();
+    val version: MutableLiveData<String> = MutableLiveData<String>()
 
     init {
         val user = sessionService.getUser()
+        var deviceInfo = deviceService.getDeviceInfo()
         fullName.value = user.fullName
         greeting.value = getGreetingMessage()
+        deviceName.value = "DEVICE : ${deviceInfo!!.description}".uppercase()
+        version.value = "VERSION : ${BuildConfig.VERSION_NAME}".uppercase()
     }
 
     fun pickList() {
