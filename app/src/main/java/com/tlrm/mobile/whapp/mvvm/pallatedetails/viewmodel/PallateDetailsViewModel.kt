@@ -1,12 +1,15 @@
 package com.tlrm.mobile.whapp.mvvm.pallatedetails.viewmodel
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlrm.mobile.whapp.mvvm.pallatedetails.model.PallateDetailsSummeryListItem
+import com.tlrm.mobile.whapp.mvvm.pallateditems.viewmodel.PallatedItemsActivity
+import com.tlrm.mobile.whapp.mvvm.picklistdetails.view.PickListDetailsActivity
 import com.tlrm.mobile.whapp.services.LocationService
 import com.tlrm.mobile.whapp.services.SessionService
 import com.tlrm.mobile.whapp.util.LoadingState
@@ -33,6 +36,14 @@ class PallateDetailsViewModel(
 
     init {
         fetchData()
+    }
+
+    fun gotoDetails(item: PallateDetailsSummeryListItem) {
+        val user = sessionService.getUser()
+        val intent = Intent(context, PallatedItemsActivity::class.java)
+        intent.putExtra("date", item.scanDate)
+        intent.putExtra("username", user.userName)
+        context.startActivity(intent)
     }
 
     fun fetchData(searchText: String? = null) {

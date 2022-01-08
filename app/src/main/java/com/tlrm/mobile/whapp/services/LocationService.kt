@@ -1,6 +1,7 @@
 package com.tlrm.mobile.whapp.services
 
 import com.tlrm.mobile.whapp.api.LocationApiService
+import com.tlrm.mobile.whapp.api.PallateDetails
 import com.tlrm.mobile.whapp.api.PallateSummeryItem
 import com.tlrm.mobile.whapp.api.PostLocation
 import com.tlrm.mobile.whapp.database.dao.PalleteDao
@@ -8,7 +9,6 @@ import com.tlrm.mobile.whapp.database.entities.PallateEntity
 import com.tlrm.mobile.whapp.util.exceptions.ServiceException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.Call
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 
@@ -46,9 +46,31 @@ class LocationService(private val locationApiService: LocationApiService,
             val response = call.execute()
 
             if (!response.isSuccessful) {
-               throw ServiceException("Unable to get pallate summery details from server")
+                throw ServiceException("Unable to get pallate summery details from server")
             }
             return@withContext response.body();
+        }
+    }
+
+    suspend fun getPallateDetails(
+        username: String, date: String, searchText: String? = null,
+        pageIndex: Int = 1, pageSize: Int = 100
+    ): PallateDetails? {
+        return withContext(Dispatchers.IO) {
+            val call = locationApiService.getLocationDetails(
+                username,
+                date,
+                searchText,
+                pageIndex,
+                pageSize
+            )
+            val response = call.execute()
+
+            if (!response.isSuccessful) {
+                throw ServiceException("Unable to get pallate details")
+            }
+
+            return@withContext response.body()
         }
     }
 

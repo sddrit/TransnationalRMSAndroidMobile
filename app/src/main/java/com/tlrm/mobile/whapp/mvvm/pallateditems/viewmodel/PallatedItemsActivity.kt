@@ -1,4 +1,4 @@
-package com.tlrm.mobile.whapp.mvvm.request.view
+package com.tlrm.mobile.whapp.mvvm.pallateditems.viewmodel
 
 import android.content.Context
 import android.os.Bundle
@@ -12,42 +12,40 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.tlrm.mobile.whapp.R
-import com.tlrm.mobile.whapp.api.RequestApiService
+import com.tlrm.mobile.whapp.api.LocationApiService
 import com.tlrm.mobile.whapp.api.ServiceGenerator
 import com.tlrm.mobile.whapp.database.AppDatabase
-import com.tlrm.mobile.whapp.databinding.ActivityRequestBinding
-import com.tlrm.mobile.whapp.mvvm.request.model.RequestListItem
-import com.tlrm.mobile.whapp.mvvm.request.viewmodel.RequestViewModel
-import com.tlrm.mobile.whapp.services.RequestService
+import com.tlrm.mobile.whapp.databinding.ActivityPallatedItemsBinding
+import com.tlrm.mobile.whapp.mvvm.pallateditems.model.PallateItem
+import com.tlrm.mobile.whapp.mvvm.pallateditems.view.PallatedItemsViewModel
+import com.tlrm.mobile.whapp.services.LocationService
 import com.tlrm.mobile.whapp.util.LoadingState
 
-class RequestActivity : AppCompatActivity() {
-
-    var isLoadMore = false;
+class PallatedItemsActivity : AppCompatActivity() {
 
     lateinit var listView: ListView
-    lateinit var viewModel: RequestViewModel
-    lateinit var binding: ActivityRequestBinding;
+    lateinit var viewModel: PallatedItemsViewModel
+    lateinit var binding: ActivityPallatedItemsBinding;
     lateinit var loaderIndicator: LinearProgressIndicator;
 
-    var adapter: RequestAdapter? = null
-    var items: ArrayList<RequestListItem> = ArrayList()
+    var adapter: PallatedItemsAdapter? = null
+    var items: ArrayList<PallateItem> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_request)
+        setContentView(R.layout.activity_pallated_items)
 
         setupUI()
         setupViewModel()
         setupObserver()
 
-        listView = this.findViewById(R.id.activity_request_list_list_view)
+        listView = this.findViewById(R.id.activity_pallated_items_list_view)
         val emptyView = findViewById<RelativeLayout>(android.R.id.empty)
 
         listView.visibility = View.INVISIBLE
         emptyView.visibility = View.INVISIBLE
 
-        adapter = RequestAdapter(this, items)
+        adapter = PallatedItemsAdapter(this, items)
         listView.adapter = adapter
         listView.setOnScrollListener(object : AbsListView.OnScrollListener {
 
@@ -88,8 +86,8 @@ class RequestActivity : AppCompatActivity() {
         viewModel.loadingState.observe(this, Observer {
 
             val spinner =
-                this.findViewById<LinearProgressIndicator>(R.id.activity_request_progress_indicator);
-            val listView = this.findViewById<ListView>(R.id.activity_request_list_list_view)
+                this.findViewById<LinearProgressIndicator>(R.id.activity_pallated_items_progress_indicator);
+            val listView = this.findViewById<ListView>(R.id.activity_pallated_items_list_view)
             val emptyView = this.findViewById<RelativeLayout>(android.R.id.empty)
 
             when (it.status) {
@@ -106,7 +104,7 @@ class RequestActivity : AppCompatActivity() {
                     listView.visibility = View.VISIBLE
                     listView.emptyView = emptyView
                     val toast = Toast.makeText(
-                        this@RequestActivity, it.msg,
+                        this@PallatedItemsActivity, it.msg,
                         Toast.LENGTH_LONG
                     )
                     toast.setGravity(Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL, 0, 0)
@@ -117,43 +115,42 @@ class RequestActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
-        loaderIndicator = findViewById(R.id.activity_request_progress_indicator)
+        loaderIndicator = findViewById(R.id.activity_pallated_items_progress_indicator)
     }
 
     private fun setupViewModel() {
         val database = AppDatabase.getDatabase(this.applicationContext)
-        viewModel = RequestViewModel(
+        viewModel = PallatedItemsViewModel(
             this,
-                RequestService(
-                ServiceGenerator.createService(RequestApiService::class.java),
+            LocationService(
+                ServiceGenerator.createService(LocationApiService::class.java),
+                database.paletteDao()
             )
         )
         binding = DataBindingUtil
-            .setContentView(this, R.layout.activity_request)
+            .setContentView(this, R.layout.activity_pallated_items)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
     }
+
+
 }
 
-
-
-class RequestAdapter(
+class PallatedItemsAdapter(
     private val context: Context,
-    private val requestListItem: ArrayList<RequestListItem>
+    private val pallateItemList: ArrayList<PallateItem>
 ) : BaseAdapter() {
 
-    private lateinit var requestNo: TextView
-    private lateinit var name: TextView
+    private lateinit var cartonNo: TextView
+    private lateinit var location: TextView
     private lateinit var date: TextView
-    private lateinit var signedImage: ImageView
-    private lateinit var notSignedImage: ImageView
 
     override fun getCount(): Int {
-        return requestListItem.count()
+        return pallateItemList.count()
     }
 
     override fun getItem(position: Int): Any {
-        return requestListItem[position]
+        return pallateItemList[position]
     }
 
     override fun getItemId(position: Int): Long {
@@ -163,29 +160,17 @@ class RequestAdapter(
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         var convertView = convertView
         convertView =
-            LayoutInflater.from(context).inflate(R.layout.request_list_item, parent, false)
+            LayoutInflater.from(context).inflate(R.layout.pallated_list_item, parent, false)
 
-        requestNo = convertView.findViewById(R.id.request_list_item_request_no)
-        name = convertView.findViewById(R.id.request_list_item_name)
-        date = convertView.findViewById(R.id.request_list_item_date)
+        cartonNo = convertView.findViewById(R.id.pallated_list_item_carton_no)
+        location = convertView.findViewById(R.id.pallated_list_item_location)
+        date = convertView.findViewById(R.id.pallated_list_item_date)
 
-        signedImage = convertView.findViewById<ImageView>(R.id.request_list_item_signed)
-        notSignedImage = convertView.findViewById<ImageView>(R.id.request_list_item_not_signed)
-
-        requestNo.text = requestListItem[position].requestNo
-        name.text = requestListItem[position].name
-        date.text = requestListItem[position].deliveryDate
-
-        if (requestListItem[position].isDigitallySigned) {
-            signedImage.visibility = View.VISIBLE
-            notSignedImage.visibility = View.GONE
-        } else {
-            signedImage.visibility = View.GONE
-            notSignedImage.visibility = View.VISIBLE
-        }
+        cartonNo.text = pallateItemList[position].barcode
+        location.text = pallateItemList[position].locationCode
+        date.text = pallateItemList[position].scannedDateTime
 
         return convertView
     }
 
 }
-

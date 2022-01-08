@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scaleType="centerInside"
-    android:background="@color/primaryDarkColor"
+    android:background="@color/primaryTextColor"
     tools:context=".mvvm.startup.view.StartupActivity">
 
     <LinearLayout
@@ -29,7 +29,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/textboxTextLightColor"
+            android:textColor="@color/primaryDarkColor"
             android:id="@+id/activity_startup_load_message_text_view"
             android:textAlignment="center"
             android:textSize="14dp"

@@ -28,6 +28,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_pallate.xml" value="0.3463541666666667" />
         <entry key="app/src/main/res/layout/activity_pallate_details.xml" value="0.3463541666666667" />
+        <entry key="app/src/main/res/layout/activity_pallated_items.xml" value="0.3463541666666667" />
         <entry key="app/src/main/res/layout/activity_pick_list.xml" value="0.37604166666666666" />
         <entry key="app/src/main/res/layout/activity_pick_list_details.xml" value="0.3463541666666667" />
         <entry key="app/src/main/res/layout/activity_pick_list_scan.xml" value="0.3463541666666667" />
@@ -43,6 +44,7 @@
         <entry key="app/src/main/res/layout/fragment_pick_list_details.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_second.xml" value="0.19166666666666668" />
         <entry key="app/src/main/res/layout/pallate_details_list_item.xml" value="0.3463541666666667" />
+        <entry key="app/src/main/res/layout/pallated_list_item.xml" value="0.3463541666666667" />
         <entry key="app/src/main/res/layout/pick_list_details_item.xml" value="0.3463541666666667" />
         <entry key="app/src/main/res/layout/pick_list_item.xml" value="0.37604166666666666" />
         <entry key="app/src/main/res/layout/pick_list_item_shape.xml" value="0.23489583333333333" />

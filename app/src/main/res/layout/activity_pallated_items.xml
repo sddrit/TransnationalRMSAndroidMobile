@@ -1,9 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".PallatedItemsActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <data>
+        <variable name="viewModel"
+            type="com.tlrm.mobile.whapp.mvvm.pallateditems.view.PallatedItemsViewModel"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/primaryDarkColor"
+        tools:context=".mvvm.pallateditems.viewmodel.PallatedItemsActivity">
+
+        <LinearLayout
+            android:id="@+id/ll_main_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/login_background"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingTop="0dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+            <RelativeLayout
+                android:id="@android:id/empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:visibility="gone"
+                android:layout_margin="30dp">
+
+                <ImageView
+                    android:id="@+id/image_empty"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:adjustViewBounds="true"
+                    android:layout_centerHorizontal="true"
+                    app:tint="@color/secondaryLightColor"
+                    android:src="@drawable/baseline_mood_bad_black_24dp"/>
+
+                <TextView
+                    android:id="@+id/text_empty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/image_empty"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/textboxTextLightColor"
+                    android:text="Oops!"/>
+
+                <TextView
+                    android:id="@+id/text_empty_hints"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/text_empty"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    android:textColor="@color/textboxTextLightColor"
+                    android:text="No items found"/>
+            </RelativeLayout>
+            <ListView
+                android:choiceMode="none"
+                android:scrollbars="none"
+                android:layout_marginTop="210dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/activity_pallated_items_list_view"
+                android:background="@color/transparent"
+                android:divider="@color/transparent"
+                android:dividerHeight="10.0sp"
+                android:clickable="true" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_alignParentTop="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/logo" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="70dp"
+                android:layout_marginRight="10dp"
+                android:paddingLeft="10dp"
+                android:text="PALLATE ITEMS"
+                android:textColor="@color/titleMainColor"
+                android:textFontWeight="600"
+                android:textSize="24dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="100dp"
+                android:layout_marginRight="10dp"
+                android:paddingLeft="10dp"
+                android:text="@{viewModel.date}"
+                android:textColor="@color/titleSubColor"
+                android:textFontWeight="600"
+                android:textSize="14dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Trms_EditTextLayout"
+                android:layout_width="match_parent"
+                app:endIconMode="clear_text"
+                app:errorEnabled="true"
+                app:boxBackgroundColor="@color/blackColor"
+                android:hint="CARTON NO #"
+                android:layout_marginTop="130dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                app:startIconDrawable="@drawable/baseline_search_black_24dp"
+                android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/activity_pallated_items_search_text_input"
+                    style="@style/Trms_EditText"
+                    android:imeOptions="actionDone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:onTextChanged="@{viewModel.onSearchTextChanged}"
+                    android:maxLines="1"
+                    android:lines="1"
+                    android:singleLine="true"
+                    android:inputType="textNoSuggestions">
+                </com.google.android.material.textfield.TextInputEditText>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/activity_pallated_items_progress_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="visible" />
+
+        </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

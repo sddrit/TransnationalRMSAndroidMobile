@@ -15,14 +15,13 @@
                 android:layout_weight="0.9"
                 android:orientation="vertical">
                 <TextView
-                    android:id="@+id/request_list_item_request_no"
+                    android:id="@+id/pallated_list_item_carton_no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:textColor="@color/textboxTextLightColor"
-                    android:text="REQUEST NO"
+                    android:text="CARTON NO"
                     android:textStyle="bold"
-                    android:layout_marginBottom="10dp"
                     android:textSize="20sp" />
 
                 <LinearLayout
@@ -34,14 +33,14 @@
                         android:layout_height="match_parent"
                         android:width="100dp"
                         android:textColor="@color/secondaryLightColor"
-                        android:text="CUSTOMER" />
+                        android:text="LOCATION" />
                     <TextView
-                        android:id="@+id/request_list_item_name"
+                        android:id="@+id/pallated_list_item_location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:textColor="@color/primaryTextColor"
-                        android:text="PRICE WATER HOUSE COOPER"
+                        android:text="LOCATION NAME"
                         android:layout_marginLeft="5dp"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -58,7 +57,7 @@
                         android:text="DATE" />
 
                     <TextView
-                        android:id="@+id/request_list_item_date"
+                        android:id="@+id/pallated_list_item_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -67,34 +66,6 @@
                         android:layout_marginLeft="5dp"
                         android:textSize="14sp" />
                 </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_height="match_parent"
-                android:layout_weight="0.1">
-
-                <ImageView
-                    android:id="@+id/request_list_item_signed"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:scaleType="centerInside"
-                    app:tint="#009c38"
-                    android:src="@drawable/baseline_check_circle_outline_black_24dp">
-                </ImageView>
-
-                <ImageView
-                    android:id="@+id/request_list_item_not_signed"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:scaleType="centerInside"
-                    app:tint="#FFC107"
-                    android:src="@drawable/baseline_edit_black_24dp">
-                </ImageView>
-
             </LinearLayout>
         </TableRow>
     </TableLayout>

@@ -15,9 +15,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:textColor="@color/secondaryLightColor"
+                android:textColor="@color/textboxTextLightColor"
                 android:text="DATE : "
-                android:textSize="16sp" />
+                android:textSize="18sp" />
             <TextView
                 android:id="@+id/pallate_details_list_item_date"
                 android:layout_width="wrap_content"
@@ -27,7 +27,7 @@
                 android:text="DATE"
                 android:layout_weight="0.5"
                 android:textStyle="bold"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
             <LinearLayout
                 android:orientation="vertical"
                 android:gravity="right"

@@ -49,6 +49,11 @@ class PallateDetailsActivity : AppCompatActivity() {
         adapter = PallateDetailsAdapter(this, pallateDetailsSummeryItems)
         listView.adapter = adapter
 
+        listView.setOnItemClickListener { _, _, position, _ ->
+            val element = adapter!!.getItem(position) as PallateDetailsSummeryListItem
+            viewModel.gotoDetails(element)
+        }
+
         viewModel.data.observe(this, {
             pallateDetailsSummeryItems.clear()
             pallateDetailsSummeryItems.addAll(it)

@@ -34,7 +34,7 @@ data class PallateDetails(
 )
 
 data class PallateDetailsItem(
-    var barcode: String,
+    var barCode: String,
     var locationCode: String,
     var scannedDateTime: String
 )
@@ -49,11 +49,11 @@ interface LocationApiService {
     @GET("/v1/api/locationSummaryByUser/{username}")
     fun getLocationSummery(@Path("username") username: String): Call<ArrayList<PallateSummeryItem>>
 
-    @GET("/v1/api/locationDetailByUser/{username}/date")
+    @GET("/v1/api/locationDetailByUser/{username}")
     fun getLocationDetails(
         @Path("username") username: String,
         @Query("dateUtc") dateUtc: String,
-        @Query("searchText") searchText: String,
+        @Query("searchText") searchText: String?,
         @Query("pageIndex") pageIndex: Int,
         @Query("pageSize") pageSize: Int
     ): Call<PallateDetails>
