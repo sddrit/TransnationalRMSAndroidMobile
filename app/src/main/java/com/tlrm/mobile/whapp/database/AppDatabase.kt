@@ -6,17 +6,21 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.tlrm.mobile.whapp.database.dao.PalleteDao
 import com.tlrm.mobile.whapp.database.dao.PickListDao
+import com.tlrm.mobile.whapp.database.dao.RequestDao
 import com.tlrm.mobile.whapp.database.dao.UserDao
-import com.tlrm.mobile.whapp.database.entities.PallateEntity
-import com.tlrm.mobile.whapp.database.entities.PickListEntity
-import com.tlrm.mobile.whapp.database.entities.UserEntity
+import com.tlrm.mobile.whapp.database.entities.*
 
-@Database(entities = [UserEntity::class, PickListEntity::class, PallateEntity::class], version = 1)
+@Database(
+    entities = [UserEntity::class, PickListEntity::class, PallateEntity::class, RequestEntity::class,
+        RequestEmptyItemEntity::class, RequestDocketItemEntity::class],
+    version = 1
+)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao
     abstract fun pickListDao(): PickListDao
     abstract fun paletteDao(): PalleteDao
+    abstract fun requestDao(): RequestDao
 
     companion object {
         private var INSTANCE: AppDatabase? = null

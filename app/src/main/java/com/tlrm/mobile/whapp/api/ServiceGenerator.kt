@@ -22,7 +22,7 @@ class ServiceGenerator {
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
 
-        private val retrofit = builder.build()
+        val retrofit = builder.build()
         private val loggingInterceptor: HttpLoggingInterceptor = HttpLoggingInterceptor()
             .setLevel(HttpLoggingInterceptor.Level.BASIC)
         private val httpClient = OkHttpClient.Builder()

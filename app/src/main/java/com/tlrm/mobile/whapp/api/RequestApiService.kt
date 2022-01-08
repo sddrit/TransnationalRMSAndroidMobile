@@ -1,7 +1,9 @@
 package com.tlrm.mobile.whapp.api
 
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 data class CreateRequest(
@@ -15,8 +17,12 @@ data class CreateRequestResponse(
     val serialNo: Int,
     val customerCode: String,
     val name: String,
+    val address: String,
     val contactPerson: String,
+    val poNo: String,
     val contactNo: String,
+    val department: String,
+    val route: String,
     val docketDetails: ArrayList<String>,
     val emptyDetails: ArrayList<CreateRequestResponseEmptyDetails>
 )
@@ -41,7 +47,6 @@ data class GetRequestResponse(
     val totalPages: Int
 )
 
-
 interface RequestApiService {
     @GET("/v1/api/request")
     fun getRequests(
@@ -49,4 +54,9 @@ interface RequestApiService {
         @Query("pageIndex") page: Int,
         @Query("pageSize") pageSize: Int
     ): Call<GetRequestResponse>
+
+    @POST("/v1/api/request/create-docket")
+    fun createDocket(
+        @Body request: CreateRequest
+    ): Call<CreateRequestResponse>
 }

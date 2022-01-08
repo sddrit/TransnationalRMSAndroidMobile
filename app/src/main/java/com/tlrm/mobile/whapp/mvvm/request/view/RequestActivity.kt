@@ -19,6 +19,7 @@ import com.tlrm.mobile.whapp.databinding.ActivityRequestBinding
 import com.tlrm.mobile.whapp.mvvm.request.model.RequestListItem
 import com.tlrm.mobile.whapp.mvvm.request.viewmodel.RequestViewModel
 import com.tlrm.mobile.whapp.services.RequestService
+import com.tlrm.mobile.whapp.services.SessionService
 import com.tlrm.mobile.whapp.util.LoadingState
 
 class RequestActivity : AppCompatActivity() {
@@ -49,6 +50,12 @@ class RequestActivity : AppCompatActivity() {
 
         adapter = RequestAdapter(this, items)
         listView.adapter = adapter
+
+        listView.setOnItemClickListener { _, _, position, _ ->
+            val element = adapter!!.getItem(position) as RequestListItem
+            viewModel.handleRequest(element)
+        }
+
         listView.setOnScrollListener(object : AbsListView.OnScrollListener {
 
             private val visibleThreshold = 5
@@ -124,10 +131,12 @@ class RequestActivity : AppCompatActivity() {
         val database = AppDatabase.getDatabase(this.applicationContext)
         viewModel = RequestViewModel(
             this,
+                SessionService(this),
                 RequestService(
-                ServiceGenerator.createService(RequestApiService::class.java),
+                    database.requestDao(),
+                    ServiceGenerator.createService(RequestApiService::class.java)
+                )
             )
-        )
         binding = DataBindingUtil
             .setContentView(this, R.layout.activity_request)
         binding.lifecycleOwner = this

@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlrm.mobile.whapp.mvvm.request.model.RequestListItem
 import com.tlrm.mobile.whapp.services.RequestService
+import com.tlrm.mobile.whapp.services.SessionService
 import com.tlrm.mobile.whapp.util.LoadingState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -16,6 +17,7 @@ import java.time.format.DateTimeFormatter
 
 class RequestViewModel(
     private val context: Context,
+    private val sessionService: SessionService,
     private val requestService: RequestService
 ) : ViewModel() {
 
@@ -36,6 +38,13 @@ class RequestViewModel(
 
     init {
         fetchData(null, 1, PAGE_SIZE)
+    }
+
+    fun handleRequest(requestListItem: RequestListItem) {
+        val user = sessionService.getUser()
+        viewModelScope.launch {
+            requestService.createRequest(requestListItem.requestNo, user.userName)
+        }
     }
 
     fun onSearchTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
