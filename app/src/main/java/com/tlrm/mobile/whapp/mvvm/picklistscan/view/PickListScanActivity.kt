@@ -32,6 +32,7 @@ import com.tlrm.mobile.whapp.services.PickListService
 import com.tlrm.mobile.whapp.services.SessionService
 import com.tlrm.mobile.whapp.util.LoadingState
 import com.tlrm.mobile.whapp.util.dp
+import kotlinx.coroutines.runBlocking
 
 class PickListScanActivity : AppCompatActivity() {
 
@@ -46,15 +47,15 @@ class PickListScanActivity : AppCompatActivity() {
     private var lastText: String? = null
 
     private val callback: BarcodeCallback = object : BarcodeCallback {
+        @Synchronized
         override fun barcodeResult(result: BarcodeResult) {
             if (result.text == null || lastText == result.text) {
                 return
             }
-            barcodeView.pause()
             lastText = result.text
             beepManager.playBeepSoundAndVibrate()
             pickListScanViewModel.scan(result.text)
-            barcodeView.resume()
+
         }
         override fun possibleResultPoints(resultPoints: List<ResultPoint>) {}
     }

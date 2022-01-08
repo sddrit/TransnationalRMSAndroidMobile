@@ -24,9 +24,21 @@ class PickListService(
         }
     }
 
+    suspend fun getPickListDetailItems(searchText: String): List<PickListDetailsItem> {
+        return withContext(Dispatchers.IO) {
+            return@withContext pickListDao.getPickListDetailItems(searchText)
+        }
+    }
+
     suspend fun getPickListItems(pickListNo: String): List<PickListEntity> {
         return withContext(Dispatchers.IO) {
             return@withContext pickListDao.getPickListItems(pickListNo)
+        }
+    }
+
+    suspend fun getPickListItems(pickListNo: String, searchText: String): List<PickListEntity> {
+        return withContext(Dispatchers.IO) {
+            return@withContext pickListDao.getPickListItems(pickListNo, searchText)
         }
     }
 

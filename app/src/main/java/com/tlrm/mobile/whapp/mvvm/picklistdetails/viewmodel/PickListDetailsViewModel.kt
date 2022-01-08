@@ -12,6 +12,7 @@ import com.tlrm.mobile.whapp.mvvm.picklistscan.view.PickListScanActivity
 import com.tlrm.mobile.whapp.mvvm.picklistdetails.model.PickListDetailsItem
 import com.tlrm.mobile.whapp.services.PickListService
 import com.tlrm.mobile.whapp.util.LoadingState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class PickListDetailsViewModel(
@@ -23,6 +24,8 @@ class PickListDetailsViewModel(
 
     private val _loadingState = MutableLiveData<LoadingState>()
     private val _data = MutableLiveData<List<PickListDetailsItem>>(emptyList())
+
+    private var searchFor: String = ""
 
     val data: LiveData<List<PickListDetailsItem>>
         get() = _data
@@ -42,7 +45,22 @@ class PickListDetailsViewModel(
         context.startActivity(intent)
     }
 
-    fun fetchData() {
+    fun onSearchTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+        val searchText = s.toString().trim()
+        if (searchText == searchFor)
+            return
+
+        searchFor = searchText
+
+        viewModelScope.launch {
+            delay(500)  //debounce timeOut
+            if (searchText != searchFor)
+                return@launch
+            fetchData(searchFor)
+        }
+    }
+
+    fun fetchData(searchText: String? = null) {
         viewModelScope.launch {
 
             _loadingState.value = LoadingState.LOADING
@@ -58,7 +76,11 @@ class PickListDetailsViewModel(
                 val pickListNumber = extras.getString("pick_list_name")!!
                 pickListNo.value = pickListNumber
 
-                val pickListDetailsItem = pickListService.getPickListItems(pickListNumber)
+
+                val pickListDetailsItem = if (!searchText.isNullOrEmpty()) pickListService.getPickListItems(
+                    pickListNumber, searchText
+                )
+                else pickListService.getPickListItems(pickListNumber)
 
                 val pickListItem = ArrayList<PickListDetailsItem>()
                 for (item in pickListDetailsItem) {

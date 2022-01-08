@@ -44,10 +44,11 @@ class PickListActivity : AppCompatActivity() {
         setupObserver()
 
         listView = this.findViewById(R.id.picklist_list_list_view)
+        listView.visibility = View.INVISIBLE
         adapter = PickListAdapter(this, pickList)
         listView.adapter = adapter
 
-        listView.setOnItemClickListener { parent, view, position, id ->
+        listView.setOnItemClickListener { _, _, position, _ ->
             val element = adapter!!.getItem(position) as PickListItem
             pickListViewModel.gotoToPickListDetails(element)
         }
@@ -69,17 +70,20 @@ class PickListActivity : AppCompatActivity() {
 
         val spinner = this.
             findViewById<LinearProgressIndicator>(R.id.activity_picklist_progress_indicator);
+        val listItemsView = this.findViewById<ListView>(R.id.picklist_list_list_view)
 
         pickListViewModel.loadingState.observe(this, Observer {
             when(it.status) {
                 LoadingState.Status.SUCCESS -> {
-                        spinner.visibility = View.GONE
+                    spinner.visibility = View.GONE
+                    listItemsView.visibility = View.VISIBLE
                 }
                 LoadingState.Status.RUNNING -> {
                     spinner.visibility = View.VISIBLE
                 }
                 LoadingState.Status.FAILED -> {
                     spinner.visibility = View.GONE
+                    listItemsView.visibility = View.VISIBLE
                 }
             }
         })

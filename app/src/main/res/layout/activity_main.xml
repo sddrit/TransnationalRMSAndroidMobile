@@ -43,10 +43,14 @@
                         android:text="PICK LIST"
                         android:onClick="@{() -> viewModel.pickList()}"
                         app:icon="@drawable/outline_inventory_2_white_24dp" />
+
+                </TableRow>
+                <TableRow>
                     <Button
                         style="@style/Trms_MainManuButton"
-                        android:layout_column="1"
+                        android:layout_column="0"
                         android:text="PALLATE"
+                        android:onClick="@{() -> viewModel.pallate()}"
                         app:icon="@drawable/outline_calendar_view_week_white_24dp" />
                 </TableRow>
                 <TableRow>
@@ -54,25 +58,16 @@
                         style="@style/Trms_MainManuButton"
                         android:layout_column="0"
                         android:text="REQUEST"
+                        android:onClick="@{() -> viewModel.request()}"
                         app:icon="@drawable/outline_emoji_transportation_white_24dp" />
-
-                    <Button
-                        style="@style/Trms_MainManuButton"
-                        android:layout_column="1"
-                        android:text="DETAILS"
-                        app:icon="@drawable/outline_manage_search_white_24dp" />
                 </TableRow>
                 <TableRow>
                     <Button
                         style="@style/Trms_MainManuButton"
                         android:layout_column="0"
-                        android:text="SYNC"
-                        app:icon="@drawable/outline_cloud_sync_white_24dp" />
-                    <Button
-                        style="@style/Trms_MainManuButton"
-                        android:layout_column="1"
-                        android:text="SETTINGS"
-                        app:icon="@drawable/outline_settings_white_24dp" />
+                        android:text="PALLATE DETAILS"
+                        android:onClick="@{() -> viewModel.pallateDetails()}"
+                        app:icon="@drawable/outline_manage_search_white_24dp" />
                 </TableRow>
             </TableLayout>
 

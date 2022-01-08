@@ -15,5 +15,5 @@ data class MetadataFieldDefinition(
 
 interface MetadataApiService {
     @GET("/v1/api/metadata")
-    fun getUsers(): Call<List<Metadata>>
+    fun getMetadata(): Call<Metadata>
 }

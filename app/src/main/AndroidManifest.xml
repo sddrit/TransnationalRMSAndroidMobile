@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
 
     <application
         android:allowBackup="true"
@@ -14,6 +15,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TLRMWarehouseMobileApplication">
+        <activity
+            android:name=".PallatedItemsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".mvvm.request.view.RequestActivity"
+            android:exported="false" />
+        <activity
+            android:name=".mvvm.pallatedetails.view.PallateDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".mvvm.pallate.view.PallateActivity"
+            android:exported="false" />
         <activity
             android:name=".mvvm.picklistdetails.view.PickListDetailsActivity"
             android:exported="false" />
@@ -40,7 +53,7 @@
             android:exported="false" />
         <activity
             android:name=".mvvm.login.view.LoginActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>

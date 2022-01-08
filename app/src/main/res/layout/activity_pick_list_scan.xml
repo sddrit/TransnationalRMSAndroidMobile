@@ -23,27 +23,27 @@
             android:layout_alignParentTop="true"></com.journeyapps.barcodescanner.DecoratedBarcodeView>
 
         <LinearLayout
-            android:orientation="vertical"
+            android:id="@+id/buttons_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="@color/primaryDarkColor"
-            android:padding="10dp"
-            android:id="@+id/buttons_layout">
+            android:orientation="vertical"
+            android:padding="10dp">
+
             <Button
-                android:layout_height="60dp"
                 android:layout_width="match_parent"
-                android:textColor="@color/textboxTextLightColor"
-                android:textSize="18sp"
+                android:layout_height="60dp"
                 android:onClick="@{() -> viewModel.complete()}"
-                android:text="COMPLETE" />
+                android:text="COMPLETE"
+                android:textColor="@color/textboxTextLightColor"
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="false"
-            android:background="@color/secondaryDarkColor"
             android:orientation="vertical"
             android:padding="10dp">
 
@@ -60,8 +60,8 @@
                         android:layout_weight="0.5"
                         android:text="@{viewModel.pickListNo}"
                         android:textColor="@color/textboxTextLightColor"
-                        android:textStyle="bold"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
 
                     <LinearLayout
                         android:layout_weight="0.1"

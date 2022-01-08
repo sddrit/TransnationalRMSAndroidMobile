@@ -1,16 +1,19 @@
 package com.tlrm.mobile.whapp.mvvm.main.viewmodel
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.tlrm.mobile.whapp.BuildConfig
 import com.tlrm.mobile.whapp.mvvm.login.view.LoginActivity
+import com.tlrm.mobile.whapp.mvvm.pallate.view.PallateActivity
+import com.tlrm.mobile.whapp.mvvm.pallatedetails.view.PallateDetailsActivity
+import com.tlrm.mobile.whapp.mvvm.picklist.view.PickListActivity
+import com.tlrm.mobile.whapp.mvvm.request.view.RequestActivity
+import com.tlrm.mobile.whapp.services.DeviceService
 import com.tlrm.mobile.whapp.services.SessionService
 import java.util.*
-import android.app.Activity
-import com.tlrm.mobile.whapp.BuildConfig
-import com.tlrm.mobile.whapp.mvvm.picklist.view.PickListActivity
-import com.tlrm.mobile.whapp.services.DeviceService
 
 
 class MainViewModel(private val context: Context,
@@ -34,6 +37,21 @@ class MainViewModel(private val context: Context,
     fun pickList() {
         val pickListIntent = Intent(context, PickListActivity::class.java)
         context.startActivity(pickListIntent)
+    }
+
+    fun pallate() {
+        val pallateIntent = Intent(context, PallateActivity::class.java)
+        context.startActivity(pallateIntent)
+    }
+
+    fun pallateDetails() {
+        val pallateDetailsIntent = Intent(context, PallateDetailsActivity::class.java)
+        context.startActivity(pallateDetailsIntent)
+    }
+
+    fun request() {
+        val requestIntent = Intent(context, RequestActivity::class.java)
+        context.startActivity(requestIntent)
     }
 
     fun logOff() {

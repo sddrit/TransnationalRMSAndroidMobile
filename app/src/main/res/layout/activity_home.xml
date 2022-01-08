@@ -86,7 +86,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android="0dp"
-                android:inputType="textNoSuggestions"></com.google.android.material.textfield.TextInputEditText>
+                android:inputType="textNoSuggestions">
+            </com.google.android.material.textfield.TextInputEditText>
 
         </com.google.android.material.textfield.TextInputLayout>
 

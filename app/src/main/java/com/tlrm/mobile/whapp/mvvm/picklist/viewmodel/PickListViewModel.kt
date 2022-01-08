@@ -3,14 +3,13 @@ package com.tlrm.mobile.whapp.mvvm.picklist.viewmodel
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.tlrm.mobile.whapp.mvvm.picklist.model.PickListItem
 import com.tlrm.mobile.whapp.mvvm.picklistdetails.view.PickListDetailsActivity
 import com.tlrm.mobile.whapp.services.PickListService
 import com.tlrm.mobile.whapp.util.LoadingState
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class PickListViewModel(private val context: Context,
@@ -20,6 +19,7 @@ class PickListViewModel(private val context: Context,
 
     private val _loadingState = MutableLiveData<LoadingState>()
     private val _data = MutableLiveData<List<PickListItem>>(emptyList())
+    private var searchFor: String = ""
 
     val data: LiveData<List<PickListItem>>
         get() = _data
@@ -40,7 +40,22 @@ class PickListViewModel(private val context: Context,
         context.startActivity(intent)
     }
 
-     fun fetchData() {
+    fun onSearchTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+        val searchText = s.toString().trim()
+        if (searchText == searchFor)
+            return
+
+        searchFor = searchText
+
+        viewModelScope.launch {
+            delay(500)  //debounce timeOut
+            if (searchText != searchFor)
+                return@launch
+            fetchData(searchFor)
+        }
+    }
+
+    fun fetchData(searchText: String? = null) {
         viewModelScope.launch {
             _loadingState.value = LoadingState.loading("Syncing picklist from server")
 
@@ -50,14 +65,18 @@ class PickListViewModel(private val context: Context,
                 Log.e(TAG, "Unable to refresh picklist", e)
             }
 
-            try{
-                val pickListDetailsItem = pickListService.getPickListDetailItems()
+            try {
+                val pickListDetailsItem =
+                    if (!searchText.isNullOrEmpty()) pickListService.getPickListDetailItems(
+                        searchText
+                    )
+                    else pickListService.getPickListDetailItems()
                 val pickListItem = ArrayList<PickListItem>()
                 for (item in pickListDetailsItem) {
                     pickListItem.add(PickListItem(0, item.pickListNo, item.count, item.picked))
                 }
                 _data.postValue(pickListItem)
-            }catch (e: Exception) {
+            } catch (e: Exception) {
                 _loadingState.value = LoadingState.error("Unable to load pick list details")
                 Log.e(TAG, "Unable to get the picklist details from database", e)
                 return@launch

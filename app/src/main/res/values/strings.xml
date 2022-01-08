@@ -1,7 +1,10 @@
 <resources>
-    <string name="app_name">TLRM Warehouse Mobile Application</string>
+    <string name="app_name">TLRM App</string>
     <string name="login_form_title">Login</string>
     <string name="login_form_username">Username</string>
     <string name="login_form_password">Password</string>
     <string name="login_form_login">LOGIN</string>
+    <string name="title_activity_details">DetailsActivity</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>
