@@ -16,6 +16,9 @@ interface RequestDao {
     @Query("SELECT * FROM Requests LIMIT 1")
     fun getRequest(): RequestDetails
 
+    @Query("SELECT EXISTS(SELECT * FROM Requests LIMIT 1)")
+    fun hasRequest(): Boolean
+
     @Insert
     fun insert(request: RequestEntity)
 
@@ -36,6 +39,29 @@ interface RequestDao {
         if (request.requestEmptyItems.isNotEmpty()) {
             insertEmptyItems(request.requestEmptyItems)
         }
+    }
+
+    @Query("Delete from RequestEmptyItem")
+    fun deleteEmptyItems()
+
+    @Query("Delete from RequestDocketItem")
+    fun deleteDocketItems()
+
+    @Query("Delete from Requests")
+    fun deleteRequests()
+
+    @Query("Update RequestDocketItem set scanned = 1 where carton_no =:cartonNumber")
+    fun markAsScan(cartonNumber: String)
+
+    @Query("Update RequestEmptyItem set scanned = 1 where  from_carton_no=:fromCartonNumber " +
+            "and to_carton_no=:toCartonNumber")
+    fun markAsScan(fromCartonNumber: String, toCartonNumber: String)
+
+    @Transaction
+    fun clearRequest() {
+        deleteEmptyItems()
+        deleteDocketItems()
+        deleteRequests()
     }
 
 }

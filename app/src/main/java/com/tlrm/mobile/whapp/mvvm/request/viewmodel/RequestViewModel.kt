@@ -1,19 +1,32 @@
 package com.tlrm.mobile.whapp.mvvm.request.viewmodel
 
+import android.R
+import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlrm.mobile.whapp.mvvm.request.model.RequestListItem
+import com.tlrm.mobile.whapp.mvvm.requestdetails.view.RequestDetailsActivity
 import com.tlrm.mobile.whapp.services.RequestService
 import com.tlrm.mobile.whapp.services.SessionService
 import com.tlrm.mobile.whapp.util.LoadingState
+import com.tlrm.mobile.whapp.util.exceptions.ServiceException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
+import android.widget.Toast
+
+import com.tlrm.mobile.whapp.mvvm.main.view.MainActivity
+
+import android.content.DialogInterface
+
+
+
 
 class RequestViewModel(
     private val context: Context,
@@ -41,9 +54,55 @@ class RequestViewModel(
     }
 
     fun handleRequest(requestListItem: RequestListItem) {
-        val user = sessionService.getUser()
+
+        if (requestListItem.isDigitallySigned) {
+            _loadingState.value = LoadingState.error("Cannot process signed request")
+            return
+        }
+
         viewModelScope.launch {
-            requestService.createRequest(requestListItem.requestNo, user.userName)
+            val user = sessionService.getUser()
+            try {
+                _loadingState.value = LoadingState.LOADING
+
+                val hasRequest = requestService.hasRequest()
+
+                if(hasRequest) {
+                    AlertDialog.Builder(context)
+                        .setTitle("Unsigned Request Exits")
+                        .setMessage("One of unsigned request exists, Do you want to remove it?")
+                        .setIcon(R.drawable.ic_dialog_alert)
+                        .setPositiveButton(
+                            "DELETE"
+                        ) { _, _ ->
+                            viewModelScope.launch {
+                                requestService.clearRequests()
+                                requestService.createRequest(requestListItem.requestNo, user.userName)
+                                _loadingState.value = LoadingState.LOADED
+                                val requestDetailsIntent =
+                                    Intent(context, RequestDetailsActivity::class.java)
+                                context.startActivity(requestDetailsIntent)
+                            }
+                        }
+                        .setNegativeButton("CONTINUE") { _, _ ->
+                            viewModelScope.launch {
+                                _loadingState.value = LoadingState.LOADED
+                                val requestDetailsIntent =
+                                    Intent(context, RequestDetailsActivity::class.java)
+                                context.startActivity(requestDetailsIntent)
+                            }
+                        }.show()
+                } else {
+                    requestService.createRequest(requestListItem.requestNo, user.userName)
+                    _loadingState.value = LoadingState.LOADED
+                    val requestDetailsIntent =
+                        Intent(context, RequestDetailsActivity::class.java)
+                    context.startActivity(requestDetailsIntent)
+                }
+
+            } catch (e: ServiceException) {
+                _loadingState.value = LoadingState.error(e.message)
+            }
         }
     }
 

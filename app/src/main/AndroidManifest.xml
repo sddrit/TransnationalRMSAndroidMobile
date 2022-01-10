@@ -16,6 +16,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TLRMWarehouseMobileApplication">
         <activity
+            android:name=".mvvm.sign.view.SignActivity"
+            android:exported="false" />
+        <activity
+            android:name=".mvvm.requestscan.view.RequestScanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".mvvm.requestdetails.view.RequestDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".mvvm.pallateditems.viewmodel.PallatedItemsActivity"
             android:exported="false" />
         <activity

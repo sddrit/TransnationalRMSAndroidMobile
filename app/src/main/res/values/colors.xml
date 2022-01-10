@@ -21,6 +21,8 @@
     <color name="blackColor">#000000</color>
     <color name="transparent">#00000000</color>
 
+    <color name="greenColor">#2A7747</color>
+
     <color name="mtrl_textinput_default_box_stroke_color">@color/secondaryDarkColor</color>
 
 </resources>

@@ -1,4 +1,4 @@
-package com.tlrm.mobile.whapp.mvvm.pallate.view
+package com.tlrm.mobile.whapp.mvvm.requestscan.view
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -21,33 +21,44 @@ import com.journeyapps.barcodescanner.BarcodeResult
 import com.journeyapps.barcodescanner.DecoratedBarcodeView
 import com.journeyapps.barcodescanner.DefaultDecoderFactory
 import com.tlrm.mobile.whapp.R
-import com.tlrm.mobile.whapp.api.LocationApiService
-import com.tlrm.mobile.whapp.api.MetadataApiService
+import com.tlrm.mobile.whapp.api.RequestApiService
 import com.tlrm.mobile.whapp.api.ServiceGenerator
 import com.tlrm.mobile.whapp.database.AppDatabase
-import com.tlrm.mobile.whapp.databinding.ActivityPallateBinding
-import com.tlrm.mobile.whapp.mvvm.pallate.viewmodel.PallateViewModel
-import com.tlrm.mobile.whapp.services.LocationService
-import com.tlrm.mobile.whapp.services.MetadataService
+import com.tlrm.mobile.whapp.databinding.ActivityRequestScanBinding
+import com.tlrm.mobile.whapp.mvvm.requestscan.viewmodel.RequestScanViewModel
+import com.tlrm.mobile.whapp.services.RequestService
 import com.tlrm.mobile.whapp.services.SessionService
 import com.tlrm.mobile.whapp.util.LoadingState
 import com.tlrm.mobile.whapp.util.dp
 
-class PallateActivity : AppCompatActivity() {
-
+class RequestScanActivity : AppCompatActivity() {
     private val PERMISSION_CAMERA_REQUEST = 1
-    private val TAG = PallateActivity::class.java.simpleName
+    private val TAG = RequestScanActivity::class.java.simpleName
 
-    private lateinit var viewModel: PallateViewModel;
-    private lateinit var binding: ActivityPallateBinding;
+    private lateinit var viewModel: RequestScanViewModel;
+    private lateinit var binding: ActivityRequestScanBinding;
 
     private lateinit var barcodeView: DecoratedBarcodeView
     private lateinit var beepManager: BeepManager
     private var lastText: String? = null
 
+    private val callback: BarcodeCallback = object : BarcodeCallback {
+        @Synchronized
+        override fun barcodeResult(result: BarcodeResult) {
+            if (result.text == null || lastText == result.text) {
+                return
+            }
+            lastText = result.text
+            beepManager.playBeepSoundAndVibrate()
+            viewModel.scan(result.text)
+
+        }
+        override fun possibleResultPoints(resultPoints: List<ResultPoint>) {}
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_pallate)
+        setContentView(R.layout.activity_request_scan)
 
         setupUI()
         setupViewModel()
@@ -62,20 +73,6 @@ class PallateActivity : AppCompatActivity() {
                 PERMISSION_CAMERA_REQUEST
             )
         }
-    }
-
-    private val callback: BarcodeCallback = object : BarcodeCallback {
-        @Synchronized
-        override fun barcodeResult(result: BarcodeResult) {
-            if (result.text == null || lastText == result.text) {
-                return
-            }
-            lastText = result.text
-            beepManager.playBeepSoundAndVibrate()
-            viewModel.scan(result.text)
-        }
-
-        override fun possibleResultPoints(resultPoints: List<ResultPoint>) {}
     }
 
     override fun onRequestPermissionsResult(
@@ -104,7 +101,7 @@ class PallateActivity : AppCompatActivity() {
 
     private fun setupObserver() {
         viewModel.loadingState.observe(this, Observer {
-            when (it.status) {
+            when(it.status) {
                 LoadingState.Status.SUCCESS -> {
 
                 }
@@ -112,10 +109,8 @@ class PallateActivity : AppCompatActivity() {
 
                 }
                 LoadingState.Status.FAILED -> {
-                    val toast = Toast.makeText(
-                        this@PallateActivity, it.msg,
-                        Toast.LENGTH_SHORT
-                    )
+                    val toast = Toast.makeText(this@RequestScanActivity, it.msg,
+                        Toast.LENGTH_LONG)
                     toast.setGravity(Gravity.TOP or Gravity.CENTER_HORIZONTAL, 0, 0)
                     toast.show()
                 }
@@ -128,21 +123,15 @@ class PallateActivity : AppCompatActivity() {
 
     private fun setupViewModel() {
         val database = AppDatabase.getDatabase(this.applicationContext)
-        val sessionService = SessionService(this.applicationContext)
-        viewModel = PallateViewModel(
-            this,
-            MetadataService(
-                ServiceGenerator.createService(MetadataApiService::class.java),
-                sessionService
-            ),
-            LocationService(
-                ServiceGenerator.createService(LocationApiService::class.java),
-                database.paletteDao()
-            ),
-            sessionService
+        viewModel = RequestScanViewModel(this,
+            SessionService(this),
+            RequestService(
+                database.requestDao(),
+                ServiceGenerator.createService(RequestApiService::class.java)
+            )
         )
         binding = DataBindingUtil
-            .setContentView(this, R.layout.activity_pallate)
+            .setContentView(this, R.layout.activity_request_scan)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
     }

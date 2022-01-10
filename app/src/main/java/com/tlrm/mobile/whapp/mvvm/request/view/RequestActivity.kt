@@ -24,8 +24,6 @@ import com.tlrm.mobile.whapp.util.LoadingState
 
 class RequestActivity : AppCompatActivity() {
 
-    var isLoadMore = false;
-
     lateinit var listView: ListView
     lateinit var viewModel: RequestViewModel
     lateinit var binding: ActivityRequestBinding;
@@ -143,8 +141,6 @@ class RequestActivity : AppCompatActivity() {
         binding.viewModel = viewModel
     }
 }
-
-
 
 class RequestAdapter(
     private val context: Context,

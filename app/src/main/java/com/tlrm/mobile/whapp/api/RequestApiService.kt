@@ -1,10 +1,8 @@
 package com.tlrm.mobile.whapp.api
 
+import okhttp3.MultipartBody
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 data class CreateRequest(
     val userName: String,
@@ -47,6 +45,12 @@ data class GetRequestResponse(
     val totalPages: Int
 )
 
+data class CartonValidationItem(
+    val cartonNo: String,
+    val canProcess: Boolean,
+    val reason: String
+)
+
 interface RequestApiService {
     @GET("/v1/api/request")
     fun getRequests(
@@ -59,4 +63,23 @@ interface RequestApiService {
     fun createDocket(
         @Body request: CreateRequest
     ): Call<CreateRequestResponse>
+
+    @GET("/v1/api/request/validate/{requestNumber}/{cartonNumber}")
+    fun validateCarton(
+        @Path("requestNumber") requestNumber: String,
+        @Path("cartonNumber") cartonNo: String
+    ): Call<ArrayList<CartonValidationItem>>
+
+    @Multipart
+    @POST("/v1/api/signature")
+    fun sign(
+        @Part file: MultipartBody.Part,
+        @Part("RequestNo") requestNo: String,
+        @Part("UserName") username: String,
+        @Part("DocketSerialNo") docketSerialNo: Int,
+        @Part("CustomerName") customerName: String,
+        @Part("CustomerNic") customerNIC: String,
+        @Part("CustomerDesignation") CustomerDesignation: String?,
+        @Part("CustomerDepartment") CustomerDepartment: String?
+    ): Call<Void>
 }

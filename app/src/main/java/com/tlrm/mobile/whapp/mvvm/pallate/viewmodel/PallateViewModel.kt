@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import android.view.Gravity
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -53,6 +54,10 @@ class PallateViewModel(
         }
         storageFieldDefinition = metadataService.getStorageFieldDefinition()!!
         user = sessionService.getUser()
+    }
+
+    fun complete() {
+        (context as AppCompatActivity).onBackPressed()
     }
 
     fun scan(barcode: String) {

@@ -32,7 +32,8 @@ data class RequestEmptyItemEntity(
     @ColumnInfo(name = "id") val id: Int,
     @ColumnInfo(name = "request_no") val requestNo: String,
     @ColumnInfo(name = "from_carton_no") val fromCartonNo: String,
-    @ColumnInfo(name = "to_carton_no") val toCartonNo: String
+    @ColumnInfo(name = "to_carton_no") val toCartonNo: String,
+    @ColumnInfo(name = "scanned") val scanned: Boolean
 )
 
 data class RequestDetails(

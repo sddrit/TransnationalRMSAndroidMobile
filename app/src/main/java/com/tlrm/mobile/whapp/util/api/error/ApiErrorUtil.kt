@@ -14,6 +14,7 @@ class ApiErrorUtils {
         fun parseError(response: Response<*>) {
 
             if (response.code() != 400) {
+                val errorBody = response.errorBody()!!.string()
                 throw ServiceException("Unable to execute request")
             }
 

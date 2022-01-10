@@ -94,6 +94,11 @@ class PickListScanActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
+    override fun onBackPressed() {
+        barcodeView.pause()
+        super.onBackPressed()
+    }
+
     fun triggerScan(view: View?) {
         barcodeView.decodeSingle(callback)
     }
