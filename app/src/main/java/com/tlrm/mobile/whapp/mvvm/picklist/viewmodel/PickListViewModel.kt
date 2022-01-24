@@ -55,6 +55,20 @@ class PickListViewModel(private val context: Context,
         }
     }
 
+    fun deletePickList(pickListNumber: String) {
+        viewModelScope.launch {
+            _loadingState.value = LoadingState.loading("Deleting picklist")
+            try {
+                pickListService.deletePickList(pickListNumber)
+                _loadingState.value = LoadingState.LOADED
+                fetchData()
+            } catch (e: Exception)  {
+                _loadingState.value = LoadingState.error("Unable to delete picklist")
+                Log.e(TAG, "Unable to delete picklist", e)
+            }
+        }
+    }
+
     fun fetchData(searchText: String? = null) {
         viewModelScope.launch {
             _loadingState.value = LoadingState.loading("Syncing picklist from server")

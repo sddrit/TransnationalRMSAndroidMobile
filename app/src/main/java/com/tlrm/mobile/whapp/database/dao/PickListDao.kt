@@ -55,6 +55,10 @@ interface PickListDao {
             "order by PickListNo desc ")
     fun getPickListDetailItems(searchText: String) : List<PickListDetailsItem>
 
+    @Query("delete from PickList where pick_list_no not in " +
+            "(select distinct pick_list_no where picked = 0)")
+    fun deleteCompletedPickList()
+
     @Query("select distinct pick_list_no As pickListNo, " +
             "(SELECT count(*) From PickList pl_ct_tb " +
             "Where pl_ct_tb.pick_list_no = pl_tb.pick_list_no) as count, " +
@@ -64,5 +68,8 @@ interface PickListDao {
             "where pl_tb.pick_list_no = :pickListNo " +
             "LIMIT 1")
     fun getPickListDetailItem(pickListNo: String) : PickListDetailsItem
+
+    @Query("delete from picklist where pick_list_no = :pickListNo")
+    fun deletePickList(pickListNo: String)
 
 }

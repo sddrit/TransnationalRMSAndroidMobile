@@ -1,96 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.daimajia.swipe.SwipeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:radius="15dp"
-    android:background="@drawable/picklist_item_shape"
-    android:padding="10dp">
-    <TableLayout
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/pick_list_item_bottom_wrapper"
+        android:weightSum="1"
+        android:orientation="vertical"
+        android:layout_width="80dp"
+        android:background="@drawable/picklist_item_bottom_shape"
+        android:layout_height="match_parent">
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <Button
+                android:id="@+id/pick_list_item_bottom_delete_button"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                app:iconTint="#9C0A33"
+                app:icon="@drawable/baseline_delete_outline_black_24dp"
+                style="@style/Widget.App.Button.OutlinedButton.IconOnly"/>
+        </TableLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TableRow>
-            <TextView
-                android:id="@+id/pick_list_item_pick_list_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:textColor="@color/textboxTextLightColor"
-                android:text="Number"
-                android:layout_weight="0.5"
-                android:textStyle="bold"
-                android:textSize="16sp" />
-            <LinearLayout
-                android:orientation="vertical"
-                android:gravity="right"
-                android:layout_weight="0.1">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:radius="15dp"
+        android:background="@drawable/picklist_item_shape"
+        android:padding="10dp">
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TableRow>
                 <TextView
-                    android:layout_width="match_parent"
-                    android:textAlignment="center"
+                    android:id="@+id/pick_list_item_pick_list_number"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/textboxHintLightColor"
-                    android:layout_marginBottom="5dp"
-                    android:text="Count"
-                    android:textSize="10sp" />
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/textboxTextLightColor"
+                    android:text="Number"
+                    android:layout_weight="0.5"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:gravity="right"
+                    android:layout_weight="0.1">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:textAlignment="center"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textboxHintLightColor"
+                        android:layout_marginBottom="5dp"
+                        android:text="Count"
+                        android:textSize="10sp" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:scaleType="centerInside"
+                        app:tint="#FFC107"
+                        android:src="@drawable/outline_inventory_2_white_24dp">
+                    </ImageView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:textAlignment="center"
+                        android:id="@+id/pick_list_item_count"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textboxTextLightColor"
+                        android:layout_marginTop="5dp"
+                        android:text="Count"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:gravity="right"
+                    android:layout_weight="0.1">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:textAlignment="center"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textboxHintLightColor"
+                        android:layout_marginBottom="5dp"
+                        android:text="Picked"
+                        android:textSize="10sp" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:scaleType="centerInside"
+                        app:tint="#009c38"
+                        android:src="@drawable/baseline_back_hand_black_24dp">
+                    </ImageView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:textAlignment="center"
+                        android:id="@+id/pick_list_item_picked"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textboxTextLightColor"
+                        android:layout_marginTop="5dp"
+                        android:text="Picked"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
                 <ImageView
+                    android:layout_weight="0.01"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:scaleType="centerInside"
-                    app:tint="#FFC107"
-                    android:src="@drawable/outline_inventory_2_white_24dp">
-                </ImageView>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:textAlignment="center"
-                    android:id="@+id/pick_list_item_count"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/textboxTextLightColor"
-                    android:layout_marginTop="5dp"
-                    android:text="Count"
-                    android:textSize="14sp" />
-            </LinearLayout>
+                    app:tint="@color/textboxHintLightColor"
+                    android:src="@drawable/baseline_arrow_forward_ios_black_24dp"/>
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:gravity="right"
-                android:layout_weight="0.1">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:textAlignment="center"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/textboxHintLightColor"
-                    android:layout_marginBottom="5dp"
-                    android:text="Picked"
-                    android:textSize="10sp" />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:scaleType="centerInside"
-                    app:tint="#009c38"
-                    android:src="@drawable/baseline_back_hand_black_24dp">
-                </ImageView>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:textAlignment="center"
-                    android:id="@+id/pick_list_item_picked"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/textboxTextLightColor"
-                    android:layout_marginTop="5dp"
-                    android:text="Picked"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <ImageView
-                android:layout_weight="0.01"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:scaleType="centerInside"
-                app:tint="@color/textboxHintLightColor"
-                android:src="@drawable/baseline_arrow_forward_ios_black_24dp"/>
-        </TableRow>
-    </TableLayout>
-</LinearLayout>
+</com.daimajia.swipe.SwipeLayout>

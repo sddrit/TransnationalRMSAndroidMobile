@@ -10,6 +10,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import com.daimajia.swipe.SwipeLayout
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.tlrm.mobile.whapp.R
 import com.tlrm.mobile.whapp.api.RequestApiService
@@ -21,6 +22,11 @@ import com.tlrm.mobile.whapp.mvvm.requestdetails.viewmodel.RequestDetailsViewMod
 import com.tlrm.mobile.whapp.services.RequestService
 import com.tlrm.mobile.whapp.services.SessionService
 import com.tlrm.mobile.whapp.util.LoadingState
+
+interface RequestDetailsEvent {
+    fun scannedItem(cartonNumber: String)
+    fun scannedItem(fromCartonNumber: String, toCartonNumber: String)
+}
 
 class RequestDetailsActivity : AppCompatActivity() {
 
@@ -47,6 +53,17 @@ class RequestDetailsActivity : AppCompatActivity() {
         emptyView.visibility = View.INVISIBLE
 
         adapter = RequestDetailsAdapter(this, items)
+
+        adapter!!.setRequestDetailsEvent(object: RequestDetailsEvent {
+            override fun scannedItem(cartonNumber: String) {
+                viewModel.scan(cartonNumber)
+            }
+
+            override fun scannedItem(fromCartonNumber: String, toCartonNumber: String) {
+                viewModel.scan(fromCartonNumber, toCartonNumber)
+            }
+        })
+
         listView.adapter = adapter
 
         viewModel.data.observe(this, {
@@ -124,6 +141,12 @@ class RequestDetailsAdapter(
     private lateinit var scannedImage: ImageView
     private lateinit var notScannedImage: ImageView
 
+    private var event: RequestDetailsEvent? = null
+
+    fun setRequestDetailsEvent(event: RequestDetailsEvent) {
+        this.event = event
+    }
+
     override fun getCount(): Int {
         return requestDetailItems.count()
     }
@@ -160,6 +183,43 @@ class RequestDetailsAdapter(
             scannedImage.visibility = View.GONE
             notScannedImage.visibility = View.VISIBLE
         }
+
+        val swipeLayout = convertView as SwipeLayout
+        swipeLayout.showMode = SwipeLayout.ShowMode.LayDown;
+
+        swipeLayout.addDrag(SwipeLayout.DragEdge.Left, convertView.findViewById(R.id.request_details_item_bottom_wrapper));
+
+        val scannedButton = convertView.findViewById<Button>(R.id.request_details_item_bottom_picked_button);
+
+        scannedButton.isEnabled = !requestListItem.scanned
+
+        scannedButton.setOnClickListener {
+            if (requestListItem.isEmptyRange) {
+                event?.scannedItem(requestListItem.fromCartonNumber!!, requestListItem.toCartonNumber!!)
+            } else {
+                event?.scannedItem(requestListItem.cartonNumber!!)
+            }
+        }
+
+        swipeLayout.addSwipeListener(object : SwipeLayout.SwipeListener {
+            override fun onClose(layout: SwipeLayout) {
+                //when the SurfaceView totally cover the BottomView.
+            }
+
+            override fun onUpdate(layout: SwipeLayout, leftOffset: Int, topOffset: Int) {
+                //you are swiping.
+            }
+
+            override fun onStartOpen(layout: SwipeLayout) {}
+            override fun onOpen(layout: SwipeLayout) {
+                //when the BottomView totally show.
+            }
+
+            override fun onStartClose(layout: SwipeLayout) {}
+            override fun onHandRelease(layout: SwipeLayout, xvel: Float, yvel: Float) {
+                //when user's hand released.
+            }
+        })
 
         return convertView
     }

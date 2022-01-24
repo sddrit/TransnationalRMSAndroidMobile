@@ -10,13 +10,13 @@ import com.tlrm.mobile.whapp.database.core.StringArrayConverter
 data class UserEntity (
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "user_name") val userName: String,
-    @ColumnInfo(name = "user_name_mobile") val userNameMobile: String,
-    @ColumnInfo(name = "full_name") val fullName: String,
-    @ColumnInfo(name = "active") val active: Boolean,
-    @ColumnInfo(name = "password_hash") val passwordHash: String,
-    @ColumnInfo(name = "password_salt") val passwordSalt: String,
-    @ColumnInfo(name = "roles")
-    @field:TypeConverters(StringArrayConverter::class)
-    val roles: ArrayList<String>
+@ColumnInfo(name = "user_name_mobile") val userNameMobile: String,
+@ColumnInfo(name = "full_name") val fullName: String,
+@ColumnInfo(name = "active") val active: Boolean,
+@ColumnInfo(name = "password_hash") val passwordHash: String,
+@ColumnInfo(name = "password_salt") val passwordSalt: String,
+@ColumnInfo(name = "roles")
+@field:TypeConverters(StringArrayConverter::class)
+val roles: ArrayList<String>
 )
 

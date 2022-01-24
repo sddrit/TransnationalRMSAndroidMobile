@@ -6,11 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import com.daimajia.swipe.SwipeLayout
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.tlrm.mobile.whapp.R
 import com.tlrm.mobile.whapp.api.DeviceApiService
@@ -24,6 +26,10 @@ import com.tlrm.mobile.whapp.services.DeviceService
 import com.tlrm.mobile.whapp.services.PickListService
 import com.tlrm.mobile.whapp.services.SessionService
 import com.tlrm.mobile.whapp.util.LoadingState
+
+interface PickListItemEvent {
+    fun deleteItem(number: String)
+}
 
 class PickListActivity : AppCompatActivity() {
 
@@ -46,6 +52,13 @@ class PickListActivity : AppCompatActivity() {
         listView = this.findViewById(R.id.picklist_list_list_view)
         listView.visibility = View.INVISIBLE
         adapter = PickListAdapter(this, pickList)
+
+        adapter!!.setPickListEvent(object : PickListItemEvent {
+            override fun deleteItem(number: String) {
+                pickListViewModel.deletePickList(number)
+            }
+        })
+
         listView.adapter = adapter
 
         listView.setOnItemClickListener { _, _, position, _ ->
@@ -120,6 +133,12 @@ class PickListAdapter(private val context: Context,
     private lateinit var count: TextView
     private lateinit var picked: TextView
 
+    private var pickListEvent: PickListItemEvent? = null
+
+    fun setPickListEvent(event: PickListItemEvent) {
+        this.pickListEvent = event;
+    }
+
     override fun getCount(): Int {
         return pickList.count()
     }
@@ -141,6 +160,37 @@ class PickListAdapter(private val context: Context,
         pickListNumber.text = pickList[position].pickListName
         count.text = pickList[position].count.toString()
         picked.text = pickList[position].picked.toString()
+
+        val swipeLayout = convertView as SwipeLayout
+        swipeLayout.showMode = SwipeLayout.ShowMode.LayDown;
+
+        swipeLayout.addDrag(SwipeLayout.DragEdge.Left, convertView.findViewById(R.id.pick_list_item_bottom_wrapper));
+
+        val deleteButton = convertView.findViewById<Button>(R.id.pick_list_item_bottom_delete_button);
+        deleteButton.setOnClickListener {
+            pickListEvent?.deleteItem(pickList[position].pickListName)
+        }
+
+        swipeLayout.addSwipeListener(object : SwipeLayout.SwipeListener {
+            override fun onClose(layout: SwipeLayout) {
+                //when the SurfaceView totally cover the BottomView.
+            }
+
+            override fun onUpdate(layout: SwipeLayout, leftOffset: Int, topOffset: Int) {
+                //you are swiping.
+            }
+
+            override fun onStartOpen(layout: SwipeLayout) {}
+            override fun onOpen(layout: SwipeLayout) {
+                //when the BottomView totally show.
+            }
+
+            override fun onStartClose(layout: SwipeLayout) {}
+            override fun onHandRelease(layout: SwipeLayout, xvel: Float, yvel: Float) {
+                //when user's hand released.
+            }
+        })
+
         return convertView
     }
 

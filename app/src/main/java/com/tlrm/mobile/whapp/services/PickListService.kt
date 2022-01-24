@@ -54,6 +54,18 @@ class PickListService(
         }
     }
 
+    suspend fun deleteCompletedPickList() {
+        return withContext(Dispatchers.IO) {
+            pickListDao.deleteCompletedPickList()
+        }
+    }
+
+    suspend fun deletePickList(pickListNo: String) {
+        return withContext(Dispatchers.IO) {
+            pickListDao.deletePickList(pickListNo)
+        }
+    }
+
     suspend fun syncedItem(cartonNo: String): Boolean {
         return withContext(Dispatchers.IO) {
 

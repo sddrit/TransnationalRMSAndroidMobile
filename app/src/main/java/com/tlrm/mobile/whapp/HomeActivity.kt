@@ -5,9 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.work.Constraints
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.google.android.material.textfield.TextInputEditText
 import com.tlrm.mobile.whapp.mvvm.login.view.LoginActivity
 import com.tlrm.mobile.whapp.mvvm.picklistscan.view.PickListScanActivity
+import com.tlrm.mobile.whapp.workers.RemovePickListSyncWorker
+import java.util.concurrent.TimeUnit
 
 
 class HomeActivity : AppCompatActivity() {

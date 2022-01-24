@@ -1,57 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.daimajia.swipe.SwipeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:radius="15dp"
-    android:background="@drawable/picklist_item_shape"
-    android:padding="10dp">
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TableRow>
-            <LinearLayout
-                android:layout_weight="0.9"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/request_details_item_carton_no"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:textColor="@color/textboxTextLightColor"
-                    android:text="CARTON NO"
-                    android:textStyle="bold"
-                    android:textSize="20sp" />
-            </LinearLayout>
+    android:layout_height="match_parent">
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:gravity="center"
+    <LinearLayout
+        android:id="@+id/request_details_item_bottom_wrapper"
+        android:weightSum="1"
+        android:orientation="vertical"
+        android:layout_width="80dp"
+        android:background="@drawable/picklist_item_bottom_shape"
+        android:layout_height="match_parent">
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <Button
+                android:id="@+id/request_details_item_bottom_picked_button"
+                android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:layout_weight="0.1">
+                app:iconTint="@color/greenColor"
+                app:icon="@drawable/baseline_document_scanner_black_24dp"
+                style="@style/Widget.App.Button.OutlinedButton.IconOnly"/>
+        </TableLayout>
 
-                <ImageView
-                    android:id="@+id/request_details_item_scanned"
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:radius="15dp"
+        android:background="@drawable/picklist_item_shape"
+        android:padding="20dp">
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TableRow>
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:scaleType="centerInside"
-                    app:tint="#009c38"
-                    android:src="@drawable/baseline_check_circle_outline_black_24dp">
-                </ImageView>
+                    android:layout_weight="0.9">
+                    <TextView
+                        android:id="@+id/request_details_item_carton_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/textboxTextLightColor"
+                        android:text="CARTON NO"
+                        android:textStyle="bold"
+                        android:textSize="20sp" />
+                </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/request_details_item_not_scanned"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:gravity="center"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:scaleType="centerInside"
-                    app:tint="#FFC107"
-                    android:src="@drawable/baseline_document_scanner_black_24dp">
-                </ImageView>
+                    android:layout_weight="0.1">
 
-            </LinearLayout>
-        </TableRow>
-    </TableLayout>
-</LinearLayout>
+                    <ImageView
+                        android:id="@+id/request_details_item_scanned"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:scaleType="centerInside"
+                        app:tint="#009c38"
+                        android:src="@drawable/baseline_check_circle_outline_black_24dp">
+                    </ImageView>
+
+                    <ImageView
+                        android:id="@+id/request_details_item_not_scanned"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:scaleType="centerInside"
+                        app:tint="#FFC107"
+                        android:src="@drawable/baseline_document_scanner_black_24dp">
+                    </ImageView>
+
+                </LinearLayout>
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+</com.daimajia.swipe.SwipeLayout>

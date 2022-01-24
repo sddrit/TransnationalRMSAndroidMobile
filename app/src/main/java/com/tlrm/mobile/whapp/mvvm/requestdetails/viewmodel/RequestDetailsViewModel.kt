@@ -82,6 +82,7 @@ class RequestDetailsViewModel(
 
         if (searchText == null) {
             _data.postValue(requestDetailsItems)
+            return
         }
 
         val result = requestDetailsItems.filter { (it.cartonNumber != null && it.cartonNumber!!.uppercase().contains(searchText!!.uppercase()))
@@ -94,6 +95,20 @@ class RequestDetailsViewModel(
     fun scan() {
         val intent = Intent(context, RequestScanActivity::class.java)
         context.startActivity(intent)
+    }
+
+    fun scan(cartonNumber: String) {
+        viewModelScope.launch {
+            requestService.markAsScan(cartonNumber)
+            init()
+        }
+    }
+
+    fun scan(fromCartonNumber: String, toCartonNumber: String) {
+        viewModelScope.launch {
+            requestService.markAsScan(fromCartonNumber, toCartonNumber)
+            init()
+        }
     }
 
     fun sign() {

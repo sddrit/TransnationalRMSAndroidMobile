@@ -5,13 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.ImageView
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import com.daimajia.swipe.SwipeLayout
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.tlrm.mobile.whapp.R
 import com.tlrm.mobile.whapp.api.DeviceApiService
@@ -25,6 +23,10 @@ import com.tlrm.mobile.whapp.services.DeviceService
 import com.tlrm.mobile.whapp.services.PickListService
 import com.tlrm.mobile.whapp.services.SessionService
 import com.tlrm.mobile.whapp.util.LoadingState
+
+interface PickListDetailsEvent {
+    fun scannedItem(cartonNumber: String)
+}
 
 class PickListDetailsActivity : AppCompatActivity() {
 
@@ -47,6 +49,12 @@ class PickListDetailsActivity : AppCompatActivity() {
         listView = this.findViewById(R.id.picklist_list_details_list_view)
         adapter = PickListDetailsAdapter(this, pickList)
         listView.adapter = adapter
+
+        adapter!!.setPickListDetailsEvent(object: PickListDetailsEvent {
+            override fun scannedItem(cartonNumber: String) {
+                pickListDetailsViewModel.scan(cartonNumber)
+            }
+        })
 
         pickListDetailsViewModel.data.observe(this, {
             pickList.clear()
@@ -88,12 +96,14 @@ class PickListDetailsActivity : AppCompatActivity() {
 
     private fun setupViewModel() {
         val database = AppDatabase.getDatabase(this.applicationContext)
+        val sessionService = SessionService(this.applicationContext);
         pickListDetailsViewModel = PickListDetailsViewModel(this,
+            sessionService,
             PickListService(
                 ServiceGenerator.createService(PickListApiService::class.java),
                 DeviceService(
                     ServiceGenerator.createService(DeviceApiService::class.java),
-                    SessionService(this.applicationContext)
+                    sessionService
                 ),
                 database.pickListDao()
             )
@@ -114,6 +124,12 @@ class PickListDetailsAdapter(private val context: Context,
     private lateinit var location: TextView
     private lateinit var pickedImage: ImageView
     private lateinit var notPickedImage: ImageView
+
+    private var event: PickListDetailsEvent? = null;
+
+    fun setPickListDetailsEvent(event: PickListDetailsEvent) {
+        this.event = event
+    }
 
     override fun getCount(): Int {
         return pickList.count()
@@ -149,6 +165,39 @@ class PickListDetailsAdapter(private val context: Context,
             pickedImage.visibility = View.GONE
             notPickedImage.visibility = View.VISIBLE
         }
+
+        val swipeLayout = convertView as SwipeLayout
+        swipeLayout.showMode = SwipeLayout.ShowMode.LayDown;
+
+        swipeLayout.addDrag(SwipeLayout.DragEdge.Left, convertView.findViewById(R.id.pick_list_details_item_bottom_wrapper));
+
+        val scannedButton = convertView.findViewById<Button>(R.id.pick_list_details_item_bottom_picked_button);
+
+        scannedButton.isEnabled = !pickList[position].picked
+
+        scannedButton.setOnClickListener {
+            event?.scannedItem(pickList[position].barcode)
+        }
+
+        swipeLayout.addSwipeListener(object : SwipeLayout.SwipeListener {
+            override fun onClose(layout: SwipeLayout) {
+                //when the SurfaceView totally cover the BottomView.
+            }
+
+            override fun onUpdate(layout: SwipeLayout, leftOffset: Int, topOffset: Int) {
+                //you are swiping.
+            }
+
+            override fun onStartOpen(layout: SwipeLayout) {}
+            override fun onOpen(layout: SwipeLayout) {
+                //when the BottomView totally show.
+            }
+
+            override fun onStartClose(layout: SwipeLayout) {}
+            override fun onHandRelease(layout: SwipeLayout, xvel: Float, yvel: Float) {
+                //when user's hand released.
+            }
+        })
 
         return convertView
     }

@@ -4,6 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.39895833333333336" />
+        <entry key="app/src/main/res/drawable-v24/picklist_item_bottom_shape.xml" value="0.23125" />
+        <entry key="app/src/main/res/drawable/baseline_delete_outline_black_24dp.xml" value="0.3625" />
         <entry key="app/src/main/res/drawable/baseline_qr_code_scanner_black_24dp.xml" value="0.2375" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.39895833333333336" />
         <entry key="app/src/main/res/drawable/input_text.xml" value="0.2375" />
@@ -17,6 +19,7 @@
         <entry key="app/src/main/res/drawable/outline_person_black_24dp.xml" value="0.2375" />
         <entry key="app/src/main/res/drawable/outline_person_grey_300_24dp.xml" value="0.39895833333333336" />
         <entry key="app/src/main/res/drawable/outline_settings_white_24dp.xml" value="0.2375" />
+        <entry key="app/src/main/res/drawable/picklist_item_shape.xml" value="0.23125" />
         <entry key="app/src/main/res/drawable/rounded_black_button.xml" value="0.39895833333333336" />
         <entry key="app/src/main/res/drawable/rounded_edittext.xml" value="0.39895833333333336" />
         <entry key="app/src/main/res/layout-w1240dp/content_scrolling.xml" value="0.24163319946452477" />
