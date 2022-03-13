@@ -1,7 +1,10 @@
 package com.tlrm.mobile.whapp.mvvm.requestscan.view
 
 import android.Manifest
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.pm.PackageManager
+import android.media.RingtoneManager
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -109,10 +112,7 @@ class RequestScanActivity : AppCompatActivity() {
 
                 }
                 LoadingState.Status.FAILED -> {
-                    val toast = Toast.makeText(this@RequestScanActivity, it.msg,
-                        Toast.LENGTH_LONG)
-                    toast.setGravity(Gravity.TOP or Gravity.CENTER_HORIZONTAL, 0, 0)
-                    toast.show()
+                    this.alert(it.msg!!)
                 }
             }
         })
@@ -134,6 +134,28 @@ class RequestScanActivity : AppCompatActivity() {
             .setContentView(this, R.layout.activity_request_scan)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+    }
+
+    private fun alert(message: String) {
+
+        barcodeView.pause()
+
+        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val notificationSound = RingtoneManager.getRingtone(applicationContext, defaultSoundUri)
+        notificationSound.play()
+
+        val builder = AlertDialog.Builder(this)
+
+        with(builder)
+        {
+            setMessage(message)
+            setPositiveButton("OK", DialogInterface.OnClickListener(function = positiveButtonClick))
+            show()
+        }
+    }
+
+    val positiveButtonClick = { dialog: DialogInterface, which: Int ->
+        barcodeView.resume();
     }
 
     private fun startScanner() {

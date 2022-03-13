@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit
 
 class ServiceGenerator {
     companion object Factory {
-        private val BASE_URL = "https://rms-mobile-indo-uat.transnational-lk.com"
+        private val BASE_URL = "https://rms-mobile-lk-uat.transnational-lk.com"
 
         var okHttpClient = OkHttpClient().newBuilder()
             .connectTimeout(60, TimeUnit.SECONDS)

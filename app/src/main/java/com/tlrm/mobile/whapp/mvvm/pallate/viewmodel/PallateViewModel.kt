@@ -111,7 +111,7 @@ class PallateViewModel(
                         context, "Pallet carton number ${barcode} at location ${location.value}",
                         Toast.LENGTH_SHORT
                     )
-                    toast!!.setGravity(Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL, 0, 10)
+                    toast!!.setGravity(Gravity.TOP or Gravity.CENTER_HORIZONTAL, 0, 10)
                     toast!!.show()
 
                 } catch (e: Exception) {

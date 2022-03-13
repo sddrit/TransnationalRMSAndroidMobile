@@ -35,7 +35,7 @@ class LoginViewModel(private val context: Context,
         password = ObservableField()
         usernameError = ObservableField()
         passwordError = ObservableField()
-        username!!.set("005")
+        username!!.set("078")
         password!!.set("1234Qwer@")
     }
 

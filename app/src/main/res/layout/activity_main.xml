@@ -53,22 +53,22 @@
                         android:onClick="@{() -> viewModel.pallate()}"
                         app:icon="@drawable/outline_calendar_view_week_white_24dp" />
                 </TableRow>
-                <TableRow>
-                    <Button
-                        style="@style/Trms_MainManuButton"
-                        android:layout_column="0"
-                        android:text="REQUEST"
-                        android:onClick="@{() -> viewModel.request()}"
-                        app:icon="@drawable/outline_emoji_transportation_white_24dp" />
-                </TableRow>
-                <TableRow>
-                    <Button
-                        style="@style/Trms_MainManuButton"
-                        android:layout_column="0"
-                        android:text="PALLATE DETAILS"
-                        android:onClick="@{() -> viewModel.pallateDetails()}"
-                        app:icon="@drawable/outline_manage_search_white_24dp" />
-                </TableRow>
+<!--                <TableRow>-->
+<!--                    <Button-->
+<!--                        style="@style/Trms_MainManuButton"-->
+<!--                        android:layout_column="0"-->
+<!--                        android:text="REQUEST"-->
+<!--                        android:onClick="@{() -> viewModel.request()}"-->
+<!--                        app:icon="@drawable/outline_emoji_transportation_white_24dp" />-->
+<!--                </TableRow>-->
+<!--                <TableRow>-->
+<!--                    <Button-->
+<!--                        style="@style/Trms_MainManuButton"-->
+<!--                        android:layout_column="0"-->
+<!--                        android:text="PALLATE DETAILS"-->
+<!--                        android:onClick="@{() -> viewModel.pallateDetails()}"-->
+<!--                        app:icon="@drawable/outline_manage_search_white_24dp" />-->
+<!--                </TableRow>-->
             </TableLayout>
 
         </LinearLayout>
