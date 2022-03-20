@@ -11,6 +11,8 @@ val cartonNo: Int, val barcode: String, val locationCode: String,
 val wareHouseCode: String, val assignedUserId: Int, val status: Int,
 val requestNo: String)
 
+data class MarkAsDeletedPickListItem(val pickListNo: String)
+
 data class PickListPickRequest(val pickListNo: String, val cartonNo: Int,
                                val pickDateTime: String, val pickedUserId: Int)
 
@@ -20,4 +22,7 @@ interface PickListApiService {
 
     @POST("/v1/api/picklist")
     fun postPickLists(@Body pickLists: List<PickListPickRequest>): Call<Void>
+
+    @POST("/v1/api/pickList/markAsDeletedFromDevice")
+    fun markAsDeletedFromDevice(@Body items: MarkAsDeletedPickListItem): Call<Void>
 }

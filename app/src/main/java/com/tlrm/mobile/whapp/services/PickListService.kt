@@ -1,6 +1,7 @@
 package com.tlrm.mobile.whapp.services
 
 import android.util.Log
+import com.tlrm.mobile.whapp.api.MarkAsDeletedPickListItem
 import com.tlrm.mobile.whapp.api.PickListApiService
 import com.tlrm.mobile.whapp.api.PickListPickRequest
 import com.tlrm.mobile.whapp.database.dao.PickListDao
@@ -62,6 +63,11 @@ class PickListService(
 
     suspend fun deletePickList(pickListNo: String) {
         return withContext(Dispatchers.IO) {
+            val call = pickListApiService.markAsDeletedFromDevice(MarkAsDeletedPickListItem(pickListNo))
+            val response = call.execute()
+            if (!response.isSuccessful) {
+                throw Error("Unable to mark as delete")
+            }
             pickListDao.deletePickList(pickListNo)
         }
     }

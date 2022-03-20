@@ -24,7 +24,7 @@ class UserService (private val userApiService: UserApiService,
         }
 
         if (user == null) {
-            throw ServiceException("Unable to find user")
+            throw ServiceException("Invalid credentials, Please try again")
         }
 
         if (!user!!.active) {
@@ -35,7 +35,7 @@ class UserService (private val userApiService: UserApiService,
             Password.IsPasswordMatch(user!!.passwordHash, user!!.passwordSalt, password)
 
         if (!isValidPassword) {
-            throw ServiceException("Invalid password, Please try again")
+            throw ServiceException("Invalid credentials, Please try again")
         }
 
         return user!!;

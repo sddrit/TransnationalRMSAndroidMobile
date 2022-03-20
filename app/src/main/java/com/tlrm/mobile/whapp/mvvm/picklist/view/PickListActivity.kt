@@ -2,13 +2,11 @@ package com.tlrm.mobile.whapp.mvvm.picklist.view
 
 import android.content.Context
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.Button
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -97,6 +95,12 @@ class PickListActivity : AppCompatActivity() {
                 LoadingState.Status.FAILED -> {
                     spinner.visibility = View.GONE
                     listItemsView.visibility = View.VISIBLE
+                    val toast = Toast.makeText(
+                        this, it.msg,
+                        Toast.LENGTH_LONG
+                    )
+                    toast.setGravity(Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL, 0, 0)
+                    toast.show()
                 }
             }
         })
@@ -109,6 +113,7 @@ class PickListActivity : AppCompatActivity() {
     private fun setupViewModel() {
         val database = AppDatabase.getDatabase(this.applicationContext)
         pickListViewModel = PickListViewModel(this,
+            SessionService(this.applicationContext),
             PickListService(
                 ServiceGenerator.createService(PickListApiService::class.java),
                 DeviceService(
