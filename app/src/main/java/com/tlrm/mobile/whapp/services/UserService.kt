@@ -1,6 +1,7 @@
 package com.tlrm.mobile.whapp.services
 
 import android.util.Log
+import com.tlrm.mobile.whapp.api.LoginHistory
 import com.tlrm.mobile.whapp.api.UserApiService
 import com.tlrm.mobile.whapp.database.dao.UserDao
 import com.tlrm.mobile.whapp.database.entities.UserEntity
@@ -39,6 +40,17 @@ class UserService (private val userApiService: UserApiService,
         }
 
         return user!!;
+    }
+
+    suspend fun addLoginHistory(userId: Int, loginDate: String, hostName: String): Boolean {
+        return withContext(Dispatchers.IO) {
+            val call = userApiService.addUserLoginHistory(LoginHistory(userId, loginDate, hostName))
+            val response = call.execute()
+            if (!response.isSuccessful) {
+                return@withContext false;
+            }
+            return@withContext true;
+        }
     }
 
     suspend fun refresh() {

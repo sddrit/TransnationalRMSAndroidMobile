@@ -8,12 +8,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.*
 import com.tlrm.mobile.whapp.services.SessionService
 import com.tlrm.mobile.whapp.services.UserService
 import com.tlrm.mobile.whapp.util.LoadingState
 import com.tlrm.mobile.whapp.util.exceptions.ServiceException
+import com.tlrm.mobile.whapp.workers.LoginHistorySyncWorker
+import com.tlrm.mobile.whapp.workers.PallateSyncWorker
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 
 
 class LoginViewModel(private val context: Context,
@@ -77,6 +83,28 @@ class LoginViewModel(private val context: Context,
             try {
                 val user = userService.login(username!!.get()!!, password!!.get()!!)
                 sessionService.setUser(user)
+
+                val deviceInfo = sessionService.getDevice();
+
+                val builder: Constraints.Builder = Constraints.Builder()
+                    .setRequiredNetworkType(NetworkType.CONNECTED)
+
+                val currentDateTime = OffsetDateTime.now(ZoneOffset.UTC)
+
+                val data: Data.Builder = Data.Builder()
+                data.putInt("userId", user.id)
+                data.putString("loginDate", currentDateTime.format(
+                    DateTimeFormatter.ISO_LOCAL_DATE_TIME))
+                data.putString("hostName", deviceInfo!!.code)
+
+                val syncWorkRequest = OneTimeWorkRequest.Builder(LoginHistorySyncWorker::class.java)
+                    .addTag("login-sync")
+                    .setInputData(data.build())
+                    .setConstraints(builder.build())
+                    .build()
+
+                WorkManager.getInstance(context).enqueue(syncWorkRequest)
+
                 _loadingState.value = LoadingState.LOADED
             }catch (e: ServiceException) {
                 _loadingState.value = LoadingState.error(e.message)
