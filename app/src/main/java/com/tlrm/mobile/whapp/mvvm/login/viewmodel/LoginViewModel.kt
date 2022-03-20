@@ -89,7 +89,9 @@ class LoginViewModel(private val context: Context,
                 val builder: Constraints.Builder = Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.CONNECTED)
 
-                val currentDateTime = OffsetDateTime.now(ZoneOffset.UTC)
+                //Convert to current date time lk. Because we store all the date time in LK timezone
+                val currentDateTime = OffsetDateTime.now(ZoneOffset.UTC).plusHours(5)
+                    .plusMinutes(30)
 
                 val data: Data.Builder = Data.Builder()
                 data.putInt("userId", user.id)
