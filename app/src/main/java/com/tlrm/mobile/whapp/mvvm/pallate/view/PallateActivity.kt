@@ -4,13 +4,13 @@ import android.Manifest
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.pm.PackageManager
+import android.media.AudioManager
 import android.media.RingtoneManager
+import android.media.ToneGenerator
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -18,7 +18,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.ResultPoint
-import com.google.zxing.client.android.BeepManager
 import com.journeyapps.barcodescanner.BarcodeCallback
 import com.journeyapps.barcodescanner.BarcodeResult
 import com.journeyapps.barcodescanner.DecoratedBarcodeView
@@ -45,7 +44,6 @@ class PallateActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPallateBinding;
 
     private lateinit var barcodeView: DecoratedBarcodeView
-    private lateinit var beepManager: BeepManager
     private var lastText: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +72,7 @@ class PallateActivity : AppCompatActivity() {
                 return
             }
             lastText = result.text
-            beepManager.playBeepSoundAndVibrate()
+            playBeep()
             viewModel.scan(result.text)
         }
 
@@ -103,6 +101,11 @@ class PallateActivity : AppCompatActivity() {
 
     fun triggerScan(view: View?) {
         barcodeView.decodeSingle(callback)
+    }
+
+    private fun playBeep() {
+        ToneGenerator(AudioManager.STREAM_MUSIC, 100).startTone(ToneGenerator.TONE_PROP_BEEP2,
+            200)
     }
 
     private fun setupObserver() {
@@ -176,7 +179,6 @@ class PallateActivity : AppCompatActivity() {
         barcodeView.decodeContinuous(callback)
         barcodeView.setStatusText("Place a barcode inside the rectangle to scan it")
         barcodeView.statusView.setPadding(10.dp, 0, 10.dp, 10.dp)
-        beepManager = BeepManager(this)
         barcodeView.resume()
     }
 
